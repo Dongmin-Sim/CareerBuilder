@@ -2,6 +2,10 @@
 
 * [CareerBuilder](README.md)
 
+## Group 1
+
+* [Database 설계](group-1/database.md)
+
 ## Reference
 
 * [API Reference](reference/api-reference/README.md)
