@@ -1716,9 +1716,10 @@ components:
         name:
           type: string
           example: Category
-        value:
-          type: string
-          example: IT/개발
+        order:
+          type: integer
+          format: int64
+          example: 1
       xml:
         name: attrreqest
     AttributionUpdateRequest:
@@ -1747,9 +1748,10 @@ components:
         name:
           type: string
           example: "Category"
-        value:
-          type: string
-          example: "IT/개발"
+        order:
+          type: integer
+          format: int64
+          example: 1
       xml:
         name: attributionReepsone
     AttributionDetailResponse:

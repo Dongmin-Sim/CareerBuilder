@@ -7,22 +7,23 @@ description: 장소는 제품을 보관하는 물리적 장소를 말합니다. 
 ## 장소 생성
 
 * 사용자는 장소를 생성할 수 있습니다.
-* 장소는 이름과 메모로 이루어져 있습니다.
+* 장소는 이름(name)과 메모(memo)로 이루어져 있습니다.
+  * 이름(name)은 필수값입니다. 이름(name)은 유일해야 합니다.
 
-{% swagger src="../../.gitbook/assets/careerbuilder (1).yaml" path="/locations" method="post" expanded="false" %}
-[careerbuilder (1).yaml](<../../.gitbook/assets/careerbuilder (1).yaml>)
+{% swagger src="../../.gitbook/assets/careerbuilder (1) (1).yaml" path="/locations" method="post" expanded="false" %}
+[careerbuilder (1) (1).yaml](<../../.gitbook/assets/careerbuilder (1) (1).yaml>)
 {% endswagger %}
 
 
 
 ## 장소 조회
 
-{% swagger src="../../.gitbook/assets/careerbuilder (1).yaml" path="/locations" method="get" %}
-[careerbuilder (1).yaml](<../../.gitbook/assets/careerbuilder (1).yaml>)
+{% swagger src="../../.gitbook/assets/careerbuilder (1) (1).yaml" path="/locations" method="get" %}
+[careerbuilder (1) (1).yaml](<../../.gitbook/assets/careerbuilder (1) (1).yaml>)
 {% endswagger %}
 
-{% swagger src="../../.gitbook/assets/careerbuilder (1).yaml" path="/locations/{location_id}" method="get" %}
-[careerbuilder (1).yaml](<../../.gitbook/assets/careerbuilder (1).yaml>)
+{% swagger src="../../.gitbook/assets/careerbuilder (1) (1).yaml" path="/locations/{location_id}" method="get" %}
+[careerbuilder (1) (1).yaml](<../../.gitbook/assets/careerbuilder (1) (1).yaml>)
 {% endswagger %}
 
 * 사용자는 등록한 장소를 조회할 수 있습니다.
@@ -32,8 +33,8 @@ description: 장소는 제품을 보관하는 물리적 장소를 말합니다. 
 
 ## 장소 수정
 
-{% swagger src="../../.gitbook/assets/careerbuilder (1).yaml" path="/locations/{location_id}" method="put" expanded="false" %}
-[careerbuilder (1).yaml](<../../.gitbook/assets/careerbuilder (1).yaml>)
+{% swagger src="../../.gitbook/assets/careerbuilder (1) (1).yaml" path="/locations/{location_id}" method="put" expanded="false" %}
+[careerbuilder (1) (1).yaml](<../../.gitbook/assets/careerbuilder (1) (1).yaml>)
 {% endswagger %}
 
 * 사용자는 등록한 장소을 수정할 수 있습니다.
@@ -44,8 +45,8 @@ description: 장소는 제품을 보관하는 물리적 장소를 말합니다. 
 
 ## 장소 삭제
 
-{% swagger src="../../.gitbook/assets/careerbuilder (1).yaml" path="/locations/{location_id}" method="delete" %}
-[careerbuilder (1).yaml](<../../.gitbook/assets/careerbuilder (1).yaml>)
+{% swagger src="../../.gitbook/assets/careerbuilder (1) (1).yaml" path="/locations/{location_id}" method="delete" %}
+[careerbuilder (1) (1).yaml](<../../.gitbook/assets/careerbuilder (1) (1).yaml>)
 {% endswagger %}
 
 * 사용자는 등록한 장소를 삭제할 수 있습니다.
