@@ -1,0 +1,1889 @@
+openapi: 3.0.3
+info:
+  title: Swagger career-build - OpenAPI 3.0
+  description: |-
+    재고 관리 시스템
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://development.career-build.swagger.io/v1
+    description: Development server
+  - url: https://staging.career-build.swagger.io/v1
+    description: Staging server
+  - url: https://api.career-build.swagger.io/v1
+    description: Production server
+tags:
+  - name: product
+    description: 제품과 관련된 행위 (제품은 재고관리 핵심 기본 단위)
+    externalDocs:
+      description: 참고
+      url: http://swagger.io
+  - name: attribution
+    description: 제품 속성과 관련된 행위 (사용자가 정의한 제품 속성)
+    externalDocs:
+      description: 참고
+      url: http://swagger.io
+  - name: location
+    description: 장소와 관련된 행위 (제품을 보관하는 장소)
+    externalDocs:
+      description: 참고
+      url: http://swagger.io
+  - name: partner
+    description: 거래처와 관련된 행위 (제품의 재고 변화를 발생시키는 대상)
+    externalDocs:
+      description: 참고
+      url: http://swagger.io
+  - name: transaction
+    description: 거래와 관련된 행위 (제품의 재고량 변화를 일으키는 대상)
+    externalDocs:
+      description: 참고
+      url: http://swagger.io
+
+paths:
+  /products:
+    post:
+      tags:
+        - product
+      summary: 제품 생성
+      description: 새로운 제품을 생성합니다.
+      operationId: createProduct
+      parameters:
+        - name: location_id
+          in: query
+          description: 제품을 생성할 위치의 아이디
+          required: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 새로운 제품을 등록합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ProductRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ProductRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiProductResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiProductResponse"
+
+    get:
+      tags:
+        - product
+      summary: 제품 전체 조회
+      description: 등록된 제품을 전체 조회합니다.
+      operationId: retrieveAllProduct
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{product_id}:
+    get:
+      tags:
+        - product
+      summary: 제품 Id로 상세 조회
+      description: 제품 한건을 조회합니다.
+      operationId: getProductById
+      parameters:
+        - name: product_id
+          in: path
+          description: 조회할 제품의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiProductDetailResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiProductDetailResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+    put:
+      tags:
+        - product
+      summary: 제품 수정
+      description: 제품을 수정합니다.
+      operationId: updateProduct
+      parameters:
+        - name: product_id
+          in: path
+          description: 수정할 제품의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 기존 제품을 수정합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUpdateRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ProductUpdateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ProductUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiProductUpdateResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiProductUpdateResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+    delete:
+      tags:
+        - product
+      summary: 제품 삭제
+      description: 제품을 삭제 합니다.
+      operationId: deleteProduct
+      parameters:
+        - name: product_id
+          in: path
+          description: 삭제할 제품의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+  /product-attrs:
+    post:
+      tags:
+        - attribution
+      summary: 제품 속성 생성
+      description: 새로운 제품 속성을 생성합니다.
+      operationId: createAttribution
+      requestBody:
+        description: 새로운 제품 속성을 등록합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributionRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AttributionRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AttributionRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionResponse"
+    get:
+      tags:
+        - attribution
+      summary: 제품 속성 전체 조회
+      description: 등록된 제품 속성을(를) 전체 조회합니다.
+      operationId: retrieveAllAttribution
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/AttributionResponse"
+
+  /product-attrs/{attr_id}:
+    get:
+      tags:
+        - attribution
+      summary: 제품 속성 Id로 상세 조회
+      description: 제품 한건을 조회합니다.
+      operationId: getProductAttrById
+      parameters:
+        - name: attr_id
+          in: path
+          description: 조회할 제품 속성의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionDetailResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionDetailResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+    put:
+      tags:
+        - attribution
+      summary: 제품 속성 수정
+      description: 제품 속성을 수정합니다.
+      operationId: updateProductAttr
+      parameters:
+        - name: attr_id
+          in: path
+          description: 수정에 필요한 제품 속성 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 기존 제품 속성을 수정합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributionUpdateRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AttributionUpdateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AttributionUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionUpdateResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiAttributionUpdateResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+    delete:
+      tags:
+        - attribution
+      summary: 제품 속성 삭제
+      description: 제품 속성을 삭제 합니다.
+      operationId: deleteProductAttr
+      parameters:
+        - name: attr_id
+          in: path
+          description: 삭제할 제품 속성 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+  /locations:
+    post:
+      tags:
+        - location
+      summary: 장소 생성
+      description: 새로운 장소를 생성합니다.
+      operationId: createLocation
+      requestBody:
+        description: 새로운 장소를 등록합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/LocationRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/LocationRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiLocationResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiLocationResponse"
+    get:
+      tags:
+        - location
+      summary: 제품 장소 전체 조회
+      description: 등록된 장소를 전체 조회합니다.
+      operationId: retrieveAllLocation
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/Location"
+
+  /locations/{location_id}:
+    get:
+      tags:
+        - location
+      summary: 장소 상세 조회
+      description: 장소를 상세 조회합니다.
+      operationId: getLocationById
+      parameters:
+        - name: location_id
+          in: path
+          description: 조회할 장소의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiLocationDetailResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiLocationDetailResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+    put:
+      tags:
+        - location
+      summary: 장소 수정
+      description: 장소를 수정합니다.
+      operationId: updateLocation
+      parameters:
+        - name: location_id
+          in: path
+          description: 수정할 장소의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 기존 장소를 수정합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationUpdateRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/LocationUpdateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/LocationUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiLocationUpdateResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiLocationUpdateResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+        "409":
+          description: 수정하려는 이름의 장소가 이미 존재합니다.
+
+    delete:
+      tags:
+        - location
+      summary: 장소 삭제
+      description: 장소를 삭제 합니다.
+      operationId: deleteLocation
+      parameters:
+        - name: location_id
+          in: path
+          description: 삭제할 장소의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+  /partners:
+    post:
+      tags:
+        - partner
+      summary: 거래처를 생성합니다.
+      description: 새로운 거래처을(를) 생성합니다.
+      operationId: createPartner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartnerRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PartnerRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PartnerRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerResponse"
+    get:
+      tags:
+        - partner
+      summary: 거래처 전체 조회
+      description: 등록된 거래처을(를) 전체 조회합니다.
+      operationId: retrieveAllPartner
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/Partner"
+
+  /partners/{partner_id}:
+    get:
+      tags:
+        - partner
+      summary: 거레처 상세 조회
+      description: 거레처을(를) 상세 조회합니다.
+      operationId: getPartnerById
+      parameters:
+        - name: partner_id
+          in: path
+          description: 조회할 거래처의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerDetailResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerDetailResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+    put:
+      tags:
+        - partner
+      summary: 거래처 수정
+      description: 거래처을(를) 수정합니다.
+      operationId: updatePartner
+      parameters:
+        - name: partner_id
+          in: path
+          description: 수정할 거래처의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 기존 거래처를 수정합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartnerUpdateRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/PartnerUpdateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PartnerUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerUpdateResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiPartnerUpdateResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+    delete:
+      tags:
+        - partner
+      summary: 거래처 삭제
+      description: 거래처을(를)) 삭제 합니다.
+      operationId: deletePartner
+      parameters:
+        - name: partner_id
+          in: path
+          description: 삭제할 거래처의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+  /location-transactions:
+    post:
+      tags:
+        - transaction
+      summary: 거레 생성
+      description: 새로운 거래을(를) 생성합니다.
+      operationId: createTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/TransactionRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TransactionRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionResponse"
+    get:
+      tags:
+        - transaction
+      summary: 거래 전체 조회
+      description: 등록된 거래을(를) 전체 조회합니다.
+      operationId: retrieveAllTransaction
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/Transaction"
+
+  /location-transactions/{transaction_id}:
+    get:
+      tags:
+        - transaction
+      summary: 거래 상세 조회
+      description: 거래을(를) 상세 조회합니다.
+      operationId: getTransactionById
+      parameters:
+        - name: transaction_id
+          in: path
+          description: 조회할 거래의 Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionDetailResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionDetailResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+    put:
+      tags:
+        - transaction
+      summary: 거래 수정
+      description: 거래을(를) 수정합니다.
+      operationId: updateTransaction
+      parameters:
+        - name: transaction_id
+          in: path
+          description: 수정에 필요한 거래 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: 기존 거래을(를) 수정합니다.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionUpdateRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/TransactionUpdateRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TransactionUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: 요청 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionUpdateResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ApiTransactionUpdateResponse"
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+    delete:
+      tags:
+        - transaction
+      summary: 거래 삭제
+      description: 거래을(를)) 삭제 합니다.
+      operationId: deleteTransaction
+      parameters:
+        - name: transaction_id
+          in: path
+          description: 삭제할 거래 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: 요청 성공
+        "400":
+          description: 요청한 id 형식이 올바르지 않습니다.
+        "404":
+          description: 리소스가 존재하지 않습니다.
+
+components:
+  schemas:
+    # =======================================
+    # Transaction
+    Transaction:
+      required:
+        - type
+        - product
+        - quantity
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+          example: 이동
+        partner:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/PartnerForTransaction"
+        from_location:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/FromLocation"
+        to_location:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ToLocation"
+        product:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductForTranaction"
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+        memo:
+          type: string
+          example: "물류 증가로 인한 재고 이동"
+        created_at:
+          type: string
+          example: 2024-04-01T03:17:23.321Z
+        status:
+          type: string
+          example: REGISTERED
+      xml:
+        name: Transaction
+    # Request
+    TransactionRequest:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          example: 이동
+        products:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductForTranaction"
+        from_location_id:
+          type: integer
+          format: int64
+          example: 1
+        to_location_id:
+          type: integer
+          format: int64
+          example: 2
+        memo:
+          type: string
+          example: "물류 증가로 인한 재고 이동"
+        created_at:
+          type: string
+          example: 2024-04-01T03:17:23.321Z
+      xml:
+        name: TransactionRequest
+
+    TransactionUpdateRequest:
+      type: object
+      properties:
+        partner_id:
+          type: integer
+          format: int64
+          example: 2
+        from_location_id:
+          type: integer
+          format: int64
+          example: 2
+        to_location_id:
+          type: integer
+          format: int64
+          example: 1
+        product:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductRequestWithIdAndQuantity"
+        memo:
+          type: string
+          example: "물류 감소로 인한 재고 2번 창고에서 1번 창고로 이동"
+      xml:
+        name: TransactionRequest
+    # Response
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        products:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductForTranaction"
+        from_location_id:
+          type: integer
+          format: int64
+          example: 1
+        to_location_id:
+          type: integer
+          format: int64
+          example: 2
+        memo:
+          type: string
+          example: "물류 증가로 인한 재고 이동"
+      xml:
+        name: TransactionResponse
+    TransactionDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+          example: 이동
+        partner:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/PartnerForTransaction"
+        from_location:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/FromLocation"
+        to_location:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ToLocation"
+        product:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductForTranaction"
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+        memo:
+          type: string
+          example: "물류 증가로 인한 재고 이동"
+        created_at:
+          type: string
+          example: 2024-04-01T03:17:23.321Z
+      xml:
+        name: TransactionDetailResponse
+
+    TransactionUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        partner_id:
+          type: integer
+          format: int64
+          example: 2
+        from_location_id:
+          type: integer
+          format: int64
+          example: 2
+        to_location_id:
+          type: integer
+          format: int64
+          example: 1
+        product:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductRequestWithIdAndQuantity"
+        memo:
+          type: string
+          example: "물류 감소로 인한 재고 2번 창고에서 1번 창고로 이동"
+      xml:
+        name: TransactionDetailResponse
+    # Response with API
+    ApiTransactionResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/TransactionResponse"
+      xml:
+        name: apiTransactionResponse
+    ApiTransactionDetailResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/TransactionDetailResponse"
+      xml:
+        name: apiTransactionDetailResponse
+    ApiTransactionUpdateResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/TransactionUpdateResponse"
+      xml:
+        name: apiTransactionDetailResponse
+
+    # =======================================
+    # Partner
+    Partner:
+      required:
+        - type
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+          example: 입고처
+        name:
+          type: string
+          example: 좋은사람서적
+        phone_number:
+          type: string
+          example: 010-1234-5678
+        email:
+          type: string
+          example: goodpeople@gmail.com
+        address:
+          type: string
+          example: 서울시 종로구 경희궁길 55
+        memo:
+          type: string
+          example: 인문서적 입고처
+        status:
+          type: string
+          example: REGISTERED
+      xml:
+        name: partner
+    PartnerForTransaction:
+      required:
+        - type
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+          example: 입고처
+        name:
+          type: string
+          example: 좋은사람서적
+        status:
+          type: string
+          example: REGISTERED
+      xml:
+        name: partner
+
+    # Request
+    PartnerRequest:
+      required:
+        - type
+        - name
+      type: object
+      properties:
+        type:
+          type: string
+          example: 입고처
+        name:
+          type: string
+          example: 좋은사람서적
+        phone_number:
+          type: string
+          example: 010-1234-5678
+        email:
+          type: string
+          example: goodpeople@gmail.com
+        address:
+          type: string
+          example: 서울시 종로구 경희궁길 55
+        memo:
+          type: string
+          example: 인문서적 입고처
+      xml:
+        name: partnerRequest
+    PartnerUpdateRequest:
+      required:
+        - type
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: 나쁜사람서적
+        phone_number:
+          type: string
+          example: 010-9999-9999
+        email:
+          type: string
+          example: badpeople@gmail.com
+        address:
+          type: string
+          example: 서울시 종로구 경희궁길 33
+        memo:
+          type: string
+          example: 인문서적 입고처
+      xml:
+        name: partnerUpdateRequest
+    # Response
+    PartnerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+          example: 입고처
+        name:
+          type: string
+          example: 좋은사람서적
+        phone_number:
+          type: string
+          example: 010-1234-5678
+        email:
+          type: string
+          example: goodpeople@gmail.com
+        address:
+          type: string
+          example: 서울시 종로구 경희궁길 55
+        memo:
+          type: string
+          example: 인문서적 입고처
+      xml:
+        name: partnerResponse
+    PartnerUpdateResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 나쁜사람서적
+        phone_number:
+          type: string
+          example: 010-9999-9999
+        email:
+          type: string
+          example: badpeople@gmail.com
+        address:
+          type: string
+          example: 서울시 종로구 경희궁길 33
+        memo:
+          type: string
+          example: 인문서적 입고처
+      xml:
+        name: partnerUpdateResponse
+    # Response with API
+    ApiPartnerResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/PartnerResponse"
+      xml:
+        name: apiLocationResponse
+    ApiPartnerDetailResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/PartnerResponse"
+      xml:
+        name: apiPartnerDetailResponse
+    ApiPartnerUpdateResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/PartnerUpdateResponse"
+      xml:
+        name: apiPartnerUpdateResponse
+
+    # =======================================
+    # Location
+    Location:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 경기 북부 창고
+        memo:
+          type: string
+          example: 경기도 의정부시 책 전용 창고
+        quantity:
+          type: integer
+          format: int64
+          example: 52731
+        status:
+          type: string
+          example: REGISTERED
+      xml:
+        name: location
+    FromLocation:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 경기 북부 창고
+        memo:
+          type: string
+          example: 경기도 의정부시 책 전용 창고
+      xml:
+        name: location
+    ToLocation:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        name:
+          type: string
+          example: 경기 서부 창고
+        memo:
+          type: string
+          example: 경기도 안양시 책 전용 창고
+      xml:
+        name: location
+
+    # Request
+    LocationRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: 경기 북부 창고
+        memo:
+          type: string
+          example: 경기도 의정부시 책 전용 창고
+      xml:
+        name: locationRequest
+    LocationUpdateRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: 경기 남부 창고
+        memo:
+          type: string
+          example: 경기도 안양시 책 전용 창고
+      xml:
+        name: locationRequest
+    # Response
+    LocationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 경기 북부 창고
+        memo:
+          type: string
+          example: 경기도 의정부시 책 전용 창고
+      xml:
+        name: locationResponse
+    LocationDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 경기 북부 창고
+        memo:
+          type: string
+          example: 경기도 의정부시 책 전용 창고
+        quantity:
+          type: integer
+          format: int64
+          example: 52731
+      xml:
+        name: locationDetailResponse
+    LocationUpdateResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 경기 남부 창고
+        memo:
+          type: string
+          example: 경기도 안양시 책 전용 창고
+      xml:
+        name: locationDetailResponse
+    # Response with API
+    ApiLocationResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/LocationResponse"
+      xml:
+        name: apiLocationResponse
+    ApiLocationDetailResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/LocationDetailResponse"
+      xml:
+        name: apiLocationDetailResponse
+    ApiLocationUpdateResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/LocationUpdateResponse"
+      xml:
+        name: apiLocationDetailResponse
+
+    # =======================================
+    # Product
+    Product:
+      required:
+        - name
+        - quantity
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계
+        barcode:
+          type: integer
+          format: int32
+          example: 1627391764819203
+        cost:
+          type: number
+          format: float
+          example: 28000
+        price:
+          type: number
+          format: float
+          example: 32000
+        attrs:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Attribution"
+        photo_url:
+          type: string
+          example: https://image-server.com/item_image.png
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+      xml:
+        name: product
+    ProductForTranaction:
+      required:
+        - id
+        - quantity
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+      xml:
+        name: product
+
+    # Request
+    ProductRequest:
+      required:
+        - name
+        - quantity
+      type: object
+      properties:
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계
+        barcode:
+          type: integer
+          format: int32
+          example: 1627391764819203
+        cost:
+          type: number
+          format: float
+          example: 28000
+        price:
+          type: number
+          format: float
+          example: 32000
+        attrs:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Attribution"
+        photo_url:
+          type: string
+          example: https://image-server.com/item_image.png
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+      xml:
+        name: productRequest
+    ProductUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계(개정판)
+        barcode:
+          type: integer
+          format: int32
+          example: 1627391764819204
+        cost:
+          type: number
+          format: float
+          example: 28000
+        price:
+          type: number
+          format: float
+          example: 35000
+        photo_url:
+          type: string
+          example: https://image-server.com/new_item_image.png
+        attrs:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Attribution"
+      xml:
+        name: productupdateresponse
+    ProductRequestWithIdAndQuantity:
+      required:
+        - id
+        - quantity
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+      xml:
+        name: productRequestWithIdAndQuantity
+
+    # Response
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계
+      xml:
+        name: productResponse
+    ProductDetailResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 에어팟 3세대
+        barcode:
+          type: integer
+          format: int32
+          example: 112
+        cost:
+          type: number
+          format: float
+          example: 112500
+        price:
+          type: number
+          format: float
+          example: 152000
+        attrs:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Attribution"
+        photo_url:
+          type: string
+          example: https://image-server.com/item_image.png
+        quantity:
+          type: integer
+          format: int64
+          example: 50
+      xml:
+        name: productresponse
+    ProductUpdateResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: OpenAPI와 스웨거를 활용한 실전 API 설계(개정판)
+        barcode:
+          type: integer
+          format: int32
+          example: 1627391764819204
+        cost:
+          type: number
+          format: float
+          example: 28000
+        price:
+          type: number
+          format: float
+          example: 152000
+        photo_url:
+          type: string
+          example: https://image-server.com/new_item_image.png
+        attrs:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Attribution"
+      xml:
+        name: productresponse
+    # Response with API
+    ApiProductResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductResponse"
+      xml:
+        name: "##default"
+    ApiProductDetailResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductDetailResponse"
+      xml:
+        name: "##default"
+    ApiProductUpdateResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ProductUpdateResponse"
+      xml:
+        name: "##default"
+
+    # =======================================
+    # Attribution
+    Attribution:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        type:
+          type: string
+          example: text
+        name:
+          type: string
+          example: Category
+        value:
+          type: string
+          example: IT/개발
+        order:
+          type: integer
+          format: int64
+          example: 1
+      xml:
+        name: attr
+    # Request
+    AttributionRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: text
+        name:
+          type: string
+          example: Category
+        value:
+          type: string
+          example: IT/개발
+      xml:
+        name: attrreqest
+    AttributionUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Category"
+        value:
+          type: string
+          example: "인문"
+        order:
+          type: integer
+          format: int64
+          example: 1
+      xml:
+        name: attributionReepsone
+    # Response
+    AttributionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 2
+        name:
+          type: string
+          example: "Category"
+        value:
+          type: string
+          example: "IT/개발"
+      xml:
+        name: attributionReepsone
+    AttributionDetailResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: text
+        name:
+          type: string
+          example: "Category"
+        value:
+          type: string
+          example: "IT/개발"
+        order:
+          type: integer
+          format: int64
+          example: 1
+      xml:
+        name: attributionReepsone
+    AttributionUpdateResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: text
+        name:
+          type: string
+          example: "Category"
+        value:
+          type: string
+          example: "인문"
+        order:
+          type: integer
+          format: int64
+          example: 1
+      xml:
+        name: attributionReepsone
+    # Response with API
+    ApiAttributionResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/AttributionResponse"
+      xml:
+        name: "##default"
+    ApiAttributionDetailResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/AttributionDetailResponse"
+      xml:
+        name: "##default"
+    ApiAttributionUpdateResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Result"
+        body:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/AttributionUpdateResponse"
+      xml:
+        name: "##default"
+
+    # =======================================
+    # Common
+    Result:
+      type: object
+      properties:
+        result_code:
+          type: integer
+          format: int64
+        result_message:
+          type: string
+        result_description:
+          type: string
+      xml:
+        name: result
+
+  requestBodies:
+    Product:
+      description: Product object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Product"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/Product"
+
+  responses:
+    404NotFound: # Can be referenced as '#/components/responses/404NotFound'
+      description: The specified resource was not found.
+
+  securitySchemes:
+    careerbuild_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://careerbuild.swagger.io/authorize
+          scopes:
+            write:product: modify product in your account
+            read:product: read your product
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
