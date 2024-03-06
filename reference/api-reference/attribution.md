@@ -2,7 +2,7 @@
 description: 사용자가 정의한 제품 속성을 커스텀 속성이라 칭합니다. 커스텀 속성을 이용하여 제품에 넣을 정보를 커스터마이징 할 수 있습니다.
 ---
 
-# Attribution 제품 속성
+# Product-Attributions 제품 속성
 
 
 

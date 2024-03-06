@@ -1,10 +1,3 @@
----
-description: >-
-  Dive into the specifics of each API endpoint by checking out our complete
-  documentation. Pets All the methods associated with CRUDing some pets. Which
-  isn't as weird as it sounds: Users
----
-
 # API Reference
 
 ## Endpoint
@@ -34,23 +27,23 @@ HTTP 상태 코드가 400 혹은 500 범위 내에 있는 응답은 요청의 �
 
 ## Resources
 
-{% content-ref url="products.md" %}
-[products.md](products.md)
+{% content-ref url="product.md" %}
+[product.md](product.md)
 {% endcontent-ref %}
 
-{% content-ref url="locations.md" %}
-[locations.md](locations.md)
+{% content-ref url="location.md" %}
+[location.md](location.md)
 {% endcontent-ref %}
 
-{% content-ref url="product-attributions.md" %}
-[product-attributions.md](product-attributions.md)
+{% content-ref url="attribution.md" %}
+[attribution.md](attribution.md)
 {% endcontent-ref %}
 
-{% content-ref url="partners.md" %}
-[partners.md](partners.md)
+{% content-ref url="partner.md" %}
+[partner.md](partner.md)
 {% endcontent-ref %}
 
-{% content-ref url="transactions.md" %}
-[transactions.md](transactions.md)
+{% content-ref url="transaction.md" %}
+[transaction.md](transaction.md)
 {% endcontent-ref %}
 
