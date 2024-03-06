@@ -828,6 +828,9 @@ components:
         memo:
           type: string
           example: "물류 증가로 인한 재고 이동"
+        created_at:
+          type: string
+          example: 2024-04-01T03:17:23.321Z
       xml:
         name: TransactionRequest
 
