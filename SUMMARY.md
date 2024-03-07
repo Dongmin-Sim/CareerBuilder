@@ -2,9 +2,10 @@
 
 * [CareerBuilder](README.md)
 
-## Group 1
+## Design
 
-* [Database 설계](group-1/database.md)
+* [요구사항 설계](design/undefined.md)
+* [Database 설계](design/database.md)
 
 ## Reference
 
@@ -14,3 +15,7 @@
   * [Product-Attributions 제품 속성](reference/api-reference/attribution.md)
   * [Partners 거래처](reference/api-reference/partner.md)
   * [Transactions 거래](reference/api-reference/transaction.md)
+
+## Meetings
+
+* [회의록](meetings/undefined.md)
