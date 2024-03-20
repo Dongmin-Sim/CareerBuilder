@@ -22,19 +22,19 @@ public class Api<T>{
                 .build();
     }
 
-    public static <T> Api<T> Error(Result result) {
+    public static <T> Api<T> ERROR(Result result) {
         return Api.<T>builder()
                 .result(result)
                 .build();
     }
 
-    public static <T> Api<T> Error(ErrorCodeIfs errorCodeIfs) {
+    public static <T> Api<T> ERROR(ErrorCodeIfs errorCodeIfs) {
         return Api.<T>builder()
                 .result(Result.ERROR(errorCodeIfs))
                 .build();
     }
 
-    public static <T> Api<T> Error(ErrorCodeIfs errorCodeIfs, String errorMessage) {
+    public static <T> Api<T> ERROR(ErrorCodeIfs errorCodeIfs, String errorMessage) {
         return Api.<T>builder()
                 .result(Result.ERROR(errorCodeIfs, errorMessage))
                 .build();
