@@ -33,8 +33,11 @@ public class Attribution extends BaseEntity {
 
     private Integer rankNum;
 
-    @Column(length = 100)
-    private String value;
+    public void updateName(String attributionName) {
+        this.attributionName = attributionName;
+    }
 
-    private int order;
+    public void updateRank(Integer rankNum) {
+        this.rankNum = rankNum;
+    }
 }
