@@ -3,6 +3,7 @@ package com.careerbuilder.careerbuilder.domain.partner.controller;
 import com.careerbuilder.careerbuilder.domain.partner.business.PartnerBusiness;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerRegisterRequest;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerResponse;
+import com.careerbuilder.careerbuilder.domain.partner.dto.UpdatePartnerRequest;
 import com.careerbuilder.careerbuilder.domain.partner.entity.type.PartnerType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -92,7 +93,7 @@ class PartnerApiControllerTest {
         // Given
         long partnerId = 1L;
         given(partnerBusiness.getPartnerById(partnerId))
-                .willReturn(Optional.of(createPartnerResponse()));
+                .willReturn(createPartnerResponse());
 
         // When & Then
         mockMvc.perform(
@@ -106,7 +107,7 @@ class PartnerApiControllerTest {
                 .andExpect(jsonPath("$.result.resultMessage").value(OK.getErrorMessage()))
                 .andExpect(jsonPath("$.result.description").value("요청 성공"))
                 .andExpect(jsonPath("$.body").isMap());
-        then(partnerBusiness).should().getPartnerById(any());
+        then(partnerBusiness).should().getPartnerById(partnerId);
     }
 
 
@@ -184,14 +185,16 @@ class PartnerApiControllerTest {
     void givenPartnerId_whenPartialUpdatePartner_thenReturnUpdatedPartnerInApiResponseOk() throws Exception {
         // Given
         long partnerId = 1L;
-        given(partnerBusiness.updatePartnerById(eq(partnerId), any()))
+        UpdatePartnerRequest updatePartner = getUpdatePartnerRequest();
+
+        given(partnerBusiness.partialUpdatePartnerById(eq(partnerId), any()))
                 .willReturn(createPartnerResponse());
 
         // When & Then
         mockMvc.perform(
                         patch("/api/partners/" + partnerId)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(createPartnerResponse()))
+                                .content(mapper.writeValueAsString(updatePartner))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -200,7 +203,7 @@ class PartnerApiControllerTest {
                 .andExpect(jsonPath("$.result.resultMessage").value(OK.getErrorMessage()))
                 .andExpect(jsonPath("$.result.description").value("요청 성공"))
                 .andExpect(jsonPath("$.body").isMap());
-        then(partnerBusiness).should().updatePartnerById(eq(partnerId), any());
+        then(partnerBusiness).should().partialUpdatePartnerById(eq(partnerId), any());
     }
 
     @DisplayName("[PATCH] /api/partners/{partnerId}: FAIL_거래처 부분 변경 - 유효하지 않은 거래처 ID")
@@ -276,6 +279,15 @@ class PartnerApiControllerTest {
                 .partnerType(PartnerType.IN)
                 .name("바른책")
                 .phoneNumber("01012344459")
+                .email("rightbook@gmail.com")
+                .address("경기도 파주시")
+                .build();
+    }
+
+    private static UpdatePartnerRequest getUpdatePartnerRequest() {
+        return UpdatePartnerRequest.builder()
+                .name("바른책")
+                .phoneNumber("01012345678")
                 .email("rightbook@gmail.com")
                 .address("경기도 파주시")
                 .build();
