@@ -4,9 +4,6 @@ import com.careerbuilder.careerbuilder.domain.partner.business.PartnerBusiness;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerRegisterRequest;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerResponse;
 import com.careerbuilder.careerbuilder.domain.partner.entity.type.PartnerType;
-import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
-import com.careerbuilder.careerbuilder.global.common.error.PartnerErrorCode;
-import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
-
-import static com.careerbuilder.careerbuilder.global.common.error.ErrorCode.*;
-import static com.careerbuilder.careerbuilder.global.common.error.PartnerErrorCode.*;
+import static com.careerbuilder.careerbuilder.global.common.error.ErrorCode.OK;
+import static com.careerbuilder.careerbuilder.global.common.error.ErrorCode.VALIDATION_ERROR;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -121,21 +116,20 @@ class PartnerApiControllerTest {
     void givenPartnerId_whenRetrievePartner_thenReturnRetrieveFailInApiResponseBadRequest() throws Exception {
         // Given
         long partnerId = 0L;
-        given(partnerBusiness.getPartnerById(partnerId))
-                .willThrow(new ApiException(PARTNER_NOT_FOUND));
 
         // When & Then
         mockMvc.perform(
                         get("/api/partners/" + partnerId)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.resultCode").value(BAD_REQUEST.getErrorCode()))
-                .andExpect(jsonPath("$.result.resultType").value(BAD_REQUEST.getErrorType().name()))
-                .andExpect(jsonPath("$.result.resultMessage").value(BAD_REQUEST.getErrorMessage()))
-                .andExpect(jsonPath("$.result.description").value("잘못된 요청"))
+                .andExpect(jsonPath("$.result.resultCode").value(VALIDATION_ERROR.getErrorCode()))
+                .andExpect(jsonPath("$.result.resultType").value(VALIDATION_ERROR.getErrorType().name()))
+                .andExpect(jsonPath("$.result.resultMessage").value(VALIDATION_ERROR.getErrorMessage()))
+                .andExpect(jsonPath("$.result.description").value("매개변수 유효성 검사 실패"))
                 .andExpect(jsonPath("$.body").isEmpty());
+        then(partnerBusiness).shouldHaveNoInteractions();
     }
 
     @DisplayName("[PUT] /api/partners/{partnerId}: SUCC_거래처 변경 - 변경된 거래처 단건 정보를 담은 표준 API 응답 리턴")
@@ -167,22 +161,22 @@ class PartnerApiControllerTest {
     void givenPartnerId_whenUpdatePartner_thenReturnUpdateFailInAPiResponsePartnerNotFound() throws Exception {
         // Given
         long partnerId = 0L;
-        given(partnerBusiness.updatePartnerById(eq(partnerId), any()))
-                .willThrow(new ApiException(PARTNER_NOT_FOUND));
+        UpdatePartnerRequest updatePartner = getUpdatePartnerRequest();
 
         // When & Then
         mockMvc.perform(
                         put("/api/partners/" + partnerId)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(updatePartner))
                 )
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.resultCode").value(BAD_REQUEST.getErrorCode()))
-                .andExpect(jsonPath("$.result.resultType").value(BAD_REQUEST.getErrorType().name()))
-                .andExpect(jsonPath("$.result.resultMessage").value(BAD_REQUEST.getErrorMessage()))
-                .andExpect(jsonPath("$.result.description").value("잘못된 요청"))
+                .andExpect(jsonPath("$.result.resultCode").value(VALIDATION_ERROR.getErrorCode()))
+                .andExpect(jsonPath("$.result.resultType").value(VALIDATION_ERROR.getErrorType().name()))
+                .andExpect(jsonPath("$.result.resultMessage").value(VALIDATION_ERROR.getErrorMessage()))
+                .andExpect(jsonPath("$.result.description").value("매개변수 유효성 검사 실패"))
                 .andExpect(jsonPath("$.body").isEmpty());
-        then(partnerBusiness).should().updatePartnerById(eq(partnerId), any());
+        then(partnerBusiness).shouldHaveNoInteractions();
     }
 
     @DisplayName("[PATCH] /api/partners/{partnerId}: SUCC_거래처 부분 변경 - 부분 변경된 거래처 단건 정보를 담은 표준 API 응답 리턴")
@@ -214,22 +208,22 @@ class PartnerApiControllerTest {
     void givenPartnerId_whenPartialUpdatePartner_thenReturnUpdateFailInAPiResponsePartnerNotFound() throws Exception {
         // Given
         long partnerId = 0L;
-        given(partnerBusiness.updatePartnerById(eq(partnerId), any()))
-                .willThrow(new ApiException(PARTNER_NOT_FOUND));
+        UpdatePartnerRequest updatePartnerRequest = getUpdatePartnerRequest();
 
         // When & Then
         mockMvc.perform(
                         patch("/api/partners/" + partnerId)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(updatePartnerRequest))
                 )
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.resultCode").value(BAD_REQUEST.getErrorCode()))
-                .andExpect(jsonPath("$.result.resultType").value(BAD_REQUEST.getErrorType().name()))
-                .andExpect(jsonPath("$.result.resultMessage").value(BAD_REQUEST.getErrorMessage()))
-                .andExpect(jsonPath("$.result.description").value("잘못된 요청"))
+                .andExpect(jsonPath("$.result.resultCode").value(VALIDATION_ERROR.getErrorCode()))
+                .andExpect(jsonPath("$.result.resultType").value(VALIDATION_ERROR.getErrorType().name()))
+                .andExpect(jsonPath("$.result.resultMessage").value(VALIDATION_ERROR.getErrorMessage()))
+                .andExpect(jsonPath("$.result.description").value("매개변수 유효성 검사 실패"))
                 .andExpect(jsonPath("$.body").isEmpty());
-        then(partnerBusiness).should().updatePartnerById(eq(partnerId), any());
+        then(partnerBusiness).shouldHaveNoInteractions();
     }
 
     @DisplayName("[DELETE] /api/partners/{partnerId}: SUCC_거래처 삭제")
@@ -260,21 +254,20 @@ class PartnerApiControllerTest {
     void givenPartnerId_whenDeletePartner_thenReturnDeleteFailInApiResponseBadRequest() throws Exception {
         // Given
         long partnerId = 0L;
-        given(partnerBusiness.deletePartnerById(partnerId))
-                .willThrow(new ApiException(PARTNER_NOT_FOUND));
 
         // When & Then
         mockMvc.perform(
                         delete("/api/partners/" + partnerId)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.resultCode").value(BAD_REQUEST.getErrorCode()))
-                .andExpect(jsonPath("$.result.resultType").value(BAD_REQUEST.getErrorType().name()))
-                .andExpect(jsonPath("$.result.resultMessage").value(BAD_REQUEST.getErrorMessage()))
-                .andExpect(jsonPath("$.result.description").value("잘못된 요청"))
+                .andExpect(jsonPath("$.result.resultCode").value(VALIDATION_ERROR.getErrorCode()))
+                .andExpect(jsonPath("$.result.resultType").value(VALIDATION_ERROR.getErrorType().name()))
+                .andExpect(jsonPath("$.result.resultMessage").value(VALIDATION_ERROR.getErrorMessage()))
+                .andExpect(jsonPath("$.result.description").value("매개변수 유효성 검사 실패"))
                 .andExpect(jsonPath("$.body").isEmpty());
+        then(partnerBusiness).shouldHaveNoInteractions();
     }
 
     private PartnerResponse createPartnerResponse() {
