@@ -4,6 +4,7 @@ import com.careerbuilder.careerbuilder.global.common.api.Api;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCodeIfs;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -30,16 +31,15 @@ public class ApiExceptionHandler {
                 .status(errorCodeIfs.getHttpStatusCode())
                 .body(Api.ERROR(errorCodeIfs, apiException.getErrorMessage()));
     }
-    @ExceptionHandler(HandlerMethodValidationException.class)
+    @ExceptionHandler({HandlerMethodValidationException.class, MethodArgumentNotValidException.class})
     public ResponseEntity<Api<Object>> validationException(
-            HandlerMethodValidationException handlerMethodValidationException
+            Exception exception
     ) {
         // TODO Exception 메시지 포맷 정리 필요
-        handlerMethodValidationException.getAllValidationResults()
-                .forEach(it-> it.getResolvableErrors().forEach(error-> log.error("[Validation Exception] : {}", error.getDefaultMessage())));
+        log.error("validationException : {}", exception.getMessage());
 
         return ResponseEntity
                 .status(ErrorCode.VALIDATION_ERROR.getHttpStatusCode())
-                .body(Api.ERROR(ErrorCode.VALIDATION_ERROR, ErrorCode.VALIDATION_ERROR.getErrorMessage()));
+                .body(Api.ERROR(ErrorCode.VALIDATION_ERROR, "유효하지 않은 요청입니다."));
     }
 }
