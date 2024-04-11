@@ -1,4 +1,4 @@
-package com.careerbuilder.careerbuilder.domain.transaction.type;
+package com.careerbuilder.careerbuilder.domain.transaction.entity.type;
 
 import lombok.RequiredArgsConstructor;
 
