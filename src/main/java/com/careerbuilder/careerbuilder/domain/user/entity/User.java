@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
