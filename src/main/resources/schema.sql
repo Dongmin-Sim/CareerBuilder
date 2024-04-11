@@ -39,12 +39,12 @@ CREATE TABLE IF NOT EXISTS "attribution" (
 
 CREATE TABLE IF NOT EXISTS "transaction" (
     "id" BIGINT AUTO_INCREMENT PRIMARY KEY,
-    "location_id" BIGINT,
+    "type" VARCHAR(50),
+    "from_location_id" BIGINT,
+    "to_location_id" BIGINT,
     "partner_id" BIGINT,
-    "quantity" INT,
     "memo" VARCHAR(200),
     "status" VARCHAR(50),
-    "type" VARCHAR(50),
     "created_at" DATETIME,
     "updated_at" DATETIME,
     "create_by" BIGINT,
