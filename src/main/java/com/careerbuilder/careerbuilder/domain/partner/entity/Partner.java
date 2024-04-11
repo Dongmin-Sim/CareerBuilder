@@ -1,6 +1,6 @@
 package com.careerbuilder.careerbuilder.domain.partner.entity;
 
-import com.careerbuilder.careerbuilder.domain.partner.type.PartnerType;
+import com.careerbuilder.careerbuilder.domain.partner.entity.type.PartnerType;
 import com.careerbuilder.careerbuilder.global.common.baseentity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
