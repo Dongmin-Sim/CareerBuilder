@@ -6,6 +6,7 @@ import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.careerbuilder.careerbuilder.global.common.error.ProductErrorCode.PRODUCT_NOT_FOUND;
@@ -34,5 +35,9 @@ public class ProductService {
                 productRepository.findById(productId)
                         .orElseThrow(() -> new ApiException(PRODUCT_NOT_FOUND))
         );
+    }
+
+    public boolean isExist(Long productId) {
+        return productRepository.existsById(productId);
     }
 }
