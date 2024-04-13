@@ -4,6 +4,7 @@ import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.TypeTransaction;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.TypeTransactionFactory;
 import com.careerbuilder.careerbuilder.domain.transaction.converter.TransactionConverter;
+import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionDetailResponse;
 import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionRegisterRequest;
 import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionResponse;
 import com.careerbuilder.careerbuilder.domain.transaction.service.TransactionService;
@@ -47,15 +48,15 @@ public class TransactionBusiness {
         return typeTransaction.action(request);
     }
 
-    public List<TransactionResponse> getTransactionList() {
+    public List<TransactionDetailResponse> getTransactionList() {
         return null;
     }
 
-    public TransactionResponse getTransactionById(@Positive Long transactionId) {
+    public TransactionDetailResponse getTransactionById(@Positive Long transactionId) {
         return null;
     }
 
-    public TransactionResponse updateTransactionById(Long transactionId) {
+    public TransactionDetailResponse updateTransactionById(Long transactionId) {
         return null;
     }
 

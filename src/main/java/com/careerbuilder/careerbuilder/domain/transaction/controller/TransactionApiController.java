@@ -1,6 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.transaction.controller;
 
 import com.careerbuilder.careerbuilder.domain.transaction.business.TransactionBusiness;
+import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionDetailResponse;
 import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionRegisterRequest;
 import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionResponse;
 import com.careerbuilder.careerbuilder.global.common.api.Api;
@@ -26,13 +27,13 @@ public class TransactionApiController {
     }
 
     @GetMapping
-    public Api<List<TransactionResponse>> getTransactionList() {
+    public Api<List<TransactionDetailResponse>> getTransactionList() {
         var response = transactionBusiness.getTransactionList();
         return Api.OK(response);
     }
 
     @GetMapping("/{tx_id}")
-    public Api<TransactionResponse> getTransactionById(
+    public Api<TransactionDetailResponse> getTransactionById(
             @PathVariable("tx_id") @Positive Long transactionId
     ) {
         var response = transactionBusiness.getTransactionById(transactionId);
@@ -40,7 +41,7 @@ public class TransactionApiController {
     }
 
     @PutMapping("/{tx_id}")
-    public Api<TransactionResponse> updateTransactionById(
+    public Api<TransactionDetailResponse> updateTransactionById(
             @PathVariable("tx_id") @Positive Long transactionId
     ) {
         var response = transactionBusiness.updateTransactionById(transactionId);
