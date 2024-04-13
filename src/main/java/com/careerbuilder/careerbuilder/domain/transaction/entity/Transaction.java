@@ -28,17 +28,11 @@ public class Transaction extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location fromLocation;
+    private Long fromLocationId;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location toLocation;
+    private Long toLocationId;
 
-    @ManyToOne
-    @JoinColumn(name = "partner_id")
-    private Partner partner;
+    private Long partnerId;
 
     @Column(length = 200)
     private String memo;
