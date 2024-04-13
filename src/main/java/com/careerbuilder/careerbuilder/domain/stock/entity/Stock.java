@@ -23,13 +23,9 @@ public class Stock extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private Long locationId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private Long productId;
 
     private int stockQuantity;
 }
