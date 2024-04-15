@@ -14,8 +14,12 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     Stock findFirstByLocationIdAndProductIdOrderById(Long locationId, Long productId);
 
     @Modifying
-    @Query("update Stock s set s.stockQuantity = s.stockQuantity + :quantity where s.locationId = :locationId and s.productId = :productId")
+    @Query("update Stock s set s.stockQuantity = :quantity where s.locationId = :locationId and s.productId = :productId")
     int updateStockQuantityByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
+
+    @Modifying
+    @Query("update Stock s set s.stockQuantity = s.stockQuantity + :quantity where s.locationId = :locationId and s.productId = :productId")
+    int updateStockQuantityIncreaseByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
 
     @Modifying
     @Query("update Stock s set s.stockQuantity = s.stockQuantity - :quantity where s.locationId = :locationId and s.productId = :productId")
