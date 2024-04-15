@@ -28,4 +28,14 @@ public class StockService {
     public int updateStockQuantity(Long locationId, Long productId, int quantity) {
         return stockRepository.updateStockQuantityByLocationIdAnAndProductId(locationId, productId, quantity);
     }
+
+    public int decreaseStockQuantity(Long locationId, Long productId, int quantity) {
+        return stockRepository.updateStockQuantityDecreaseByLocationIdAnAndProductId(locationId, productId, quantity);
+    }
+
+
+    public boolean canDecrease(Long locationId, Long productId, Integer quantity) {
+        Stock stock = findByLocationIdAndProductId(locationId, productId);
+        return stock.getStockQuantity() - quantity >= 0;
+    }
 }
