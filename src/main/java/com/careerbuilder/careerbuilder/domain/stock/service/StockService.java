@@ -5,6 +5,7 @@ import com.careerbuilder.careerbuilder.domain.stock.repository.StockRepository;
 import com.careerbuilder.careerbuilder.domain.transaction.entity.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.security.PublicKey;
@@ -31,6 +32,12 @@ public class StockService {
 
     public int decreaseStockQuantity(Long locationId, Long productId, int quantity) {
         return stockRepository.updateStockQuantityDecreaseByLocationIdAnAndProductId(locationId, productId, quantity);
+    }
+
+    @Transactional
+    public int moveStockQuantity(Long fromLocationId, Long toLocationId, Long productId, int quantity) {
+        stockRepository.updateStockQuantityDecreaseByLocationIdAnAndProductId(fromLocationId, productId, quantity);
+        return stockRepository.updateStockQuantityByLocationIdAnAndProductId(toLocationId, productId, quantity);
     }
 
 

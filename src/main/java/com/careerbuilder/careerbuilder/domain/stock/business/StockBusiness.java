@@ -40,7 +40,13 @@ public class StockBusiness {
                     item.getQuantity()
             );
         }
-        throw new RuntimeException("oh no!");
+    }
+
+    @Transactional
+    public void moveStockWithItemList(Long fromLocation, Long toLocation, List<Item> items) {
+        items.forEach(item -> {
+            stockService.moveStockQuantity(fromLocation, toLocation, item.getProductId(), item.getQuantity());
+        });
     }
 
     public boolean canDecreaseStock(Long locationId, Long productId, Integer quantity) {
