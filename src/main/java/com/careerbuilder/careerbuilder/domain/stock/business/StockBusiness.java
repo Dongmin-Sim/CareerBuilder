@@ -28,4 +28,22 @@ public class StockBusiness {
             );
         }
     }
+
+    @Transactional
+    public void decreaseStockWithItemList(
+            Long locationId, List<Item> items
+    ) {
+        for (Item item : items) {
+            stockService.decreaseStockQuantity(
+                    locationId,
+                    item.getProductId(),
+                    item.getQuantity()
+            );
+        }
+        throw new RuntimeException("oh no!");
+    }
+
+    public boolean canDecreaseStock(Long locationId, Long productId, Integer quantity) {
+        return stockService.canDecrease(locationId, productId, quantity);
+    }
 }
