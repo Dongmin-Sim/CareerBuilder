@@ -1,5 +1,6 @@
 package com.careerbuilder.careerbuilder.domain.partner.entity;
 
+import com.careerbuilder.careerbuilder.domain.partner.dto.UpdatePartnerRequest;
 import com.careerbuilder.careerbuilder.domain.partner.entity.type.PartnerType;
 import com.careerbuilder.careerbuilder.global.common.baseentity.BaseEntity;
 import jakarta.persistence.*;
@@ -39,4 +40,13 @@ public class Partner extends BaseEntity {
 
     @Column(length = 50)
     private String address;
+
+    public void updatePartner(
+            UpdatePartnerRequest request
+    ) {
+        this.name = request.getName();
+        this.phoneNumber = request.getPhoneNumber();
+        this.email = request.getEmail();
+        this.address = request.getAddress();
+    }
 }
