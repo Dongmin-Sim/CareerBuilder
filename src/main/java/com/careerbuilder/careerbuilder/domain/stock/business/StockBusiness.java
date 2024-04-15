@@ -1,6 +1,5 @@
 package com.careerbuilder.careerbuilder.domain.stock.business;
 
-import com.careerbuilder.careerbuilder.domain.stock.converter.StockConverter;
 import com.careerbuilder.careerbuilder.domain.stock.service.StockService;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +45,17 @@ public class StockBusiness {
     public void moveStockWithItemList(Long fromLocation, Long toLocation, List<Item> items) {
         items.forEach(item -> {
             stockService.moveStockQuantity(fromLocation, toLocation, item.getProductId(), item.getQuantity());
+        });
+    }
+
+    @Transactional
+    public void adjustStockWithItemList(Long toLocationId, List<Item> items) {
+        items.forEach(item -> {
+            stockService.adjustStockQuantity(
+                    toLocationId,
+                    item.getProductId(),
+                    item.getQuantity()
+            );
         });
     }
 
