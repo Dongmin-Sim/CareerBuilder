@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{stock}">header</h1>
+  </div>
+  <div class="container" style="max-width: 800px">
+    <div class="py-5 text-center">
+      <h2 th:text="#{stock}"></h2>
+    </div>
+
+    <hr class="my-4">
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>위치 ID</th>
+          <th>위치</th>
+          <th>메모</th>
+          <th>수량</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stockQuantity : ${stocks}">
+          <td><a href="detail.html" th:href="@{|/stocks/${stockQuantity.locationId}|}" th:text="${stockQuantity.locationId}">id</a></td>
+          <td><a href="detail.html" th:href="@{|/stocks/${stockQuantity.locationId}|}" th:text="${stockQuantity.locationName}">위치</a></td>
+          <td th:text="${stockQuantity.locationMemo}">메모</td>
+          <td th:text="${stockQuantity.totalQuantity}">수량</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='../index.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">홈으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>
