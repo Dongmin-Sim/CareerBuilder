@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{transaction}">header</h1>
+  </div>
+  <div class="container">
+  <div class="py-5 text-center">
+    <h2 th:text="#{transaction.detail}">상세</h2>
+  </div>
+
+  <!-- 추가 -->
+  <div th:object="${transaction}">
+    <div>
+      <label for="id">ID</label>
+      <input type="text" id="id" name="id" class="form-control" value="1" th:value="*{id}" readonly disabled>
+    </div>
+    <div>
+      <label for="transactionType">유형</label>
+      <input type="text" id="transactionType" name="transactionType" class="form-control" value="거래유형" th:value="*{transactionType.description}" readonly disabled>
+    </div>
+    <div th:if="*{fromLocation!=null}">
+      <label for="fromLocation">출고지</label>
+      <input type="text" id="fromLocation" name="fromLocation" class="form-control" value="출고지" th:value="*{fromLocation.name}" readonly disabled>
+    </div>
+    <div th:if="*{toLocation!=null}">
+      <label for="toLocation">입고지</label>
+      <input type="text" id="toLocation" name="toLocation" class="form-control" value="입고지" th:value="*{toLocation.name}" readonly disabled>
+    </div>
+    <div th:if="*{partner!=null}">
+      <label for="partner">거래처</label>
+      <input type="text" id="partner" name="partner" class="form-control" value="거래처" th:value="*{partner.name}" readonly disabled>
+    </div>
+    <div th:unless="*{partner!=null}">
+      <label>거래처</label>
+      <input type="text" class="form-control" placeholder="등록된 거래처가 없습니다." readonly disabled>
+    </div>
+    <div>
+      <label for="status">거래상태</label>
+      <input type="text" id="status" name="status" class="form-control" value="거래상태" th:value="*{status}" readonly disabled>
+    </div>
+    <div>
+      <label for="memo">메모</label>
+      <textarea id="memo" name="memo" class="form-control" value="메모" th:value="*{memo}" readonly disabled></textarea>
+    </div>
+
+    <hr class="my-4">
+    <!--    -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>사진</th>
+          <th>제품명</th>
+          <th>구매가</th>
+          <th>판매가</th>
+          <th>변동수량</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item : ${transaction.items}">
+          <td>
+            <img th:src="@{|/products/${item.product.photoUrl}|}" alt="product image">
+          </td>
+          <td>
+            <a href="detail.html"
+               th:href="@{|/products/${item.product.id}|}"
+               th:text="${item.product.name}">
+              제품명
+            </a>
+          </td>
+          <td th:text="${item.product.cost}">구매가</td>
+          <td th:text="${item.product.price}">판매가</td>
+          <td th:text="${item.quantity}">수량</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr class="my-4">
+
+
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-dark btn-lg"
+              onclick="location.href='editForm.html'"
+              th:onclick="|location.href='@{/transactions/{transactionId}/edit(transactionId=${transaction.id})}'|"
+              type="button" th:text="#{transaction.edit}">수정</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-danger btn-lg"
+              onclick="location.href='editForm.html'"
+              th:onclick="|location.href='@{/transactions/{transactionId}/delete(transactionId=${transaction.id})}'|"
+              type="button" th:text="#{transaction.delete}">삭제</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg"
+              onclick="location.href='list.html'"
+              th:onclick="|location.href='@{/transactions}'|"
+              type="button">목록으로</button>
+    </div>
+  </div>
+</div> <!-- /container -->
+</div>
+
+</html>
