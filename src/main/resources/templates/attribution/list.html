@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{attribution}">header</h1>
+  </div>
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2 th:text="#{attribution}">속성</h2>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-dark float-end"
+                onclick="location.href='addForm.html'"
+                th:onclick="|location.href='@{/attributions/add}'|"
+                type="button">속성 등록
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>타입</th>
+          <th>이름</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attribution : ${attributions}">
+          <td><a href="detail.html" th:href="@{|/attributions/${attribution.id}|}" th:text="${attribution.id}">속성 id</a></td>
+          <td><a th:text="${attribution.attributionType.description}">속성 타입</a></td>
+          <td><a th:text="${attribution.attributionName}">속성 이름</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='../index.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">홈으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{attribution}">header</h1>
+  </div>
+  <div class="container">
+
+    <div class="py-5 text-center">
+      <h2>속성 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+      <label for="locationId">ID</label>
+      <input type="text" id="locationId" name="locationId" class="form-control" value="1" th:value="${attribution.id}" readonly disabled>
+    </div>
+    <!--  radio checkbox  -->
+    <div>종류</div>
+    <div th:each="type : ${attributionTypes}" class="form-check form-check-inline">
+      <input type="radio" th:field="${attribution.attributionType}" th:value="${type.name()}" class="form-check-input" disabled>
+      <label th:for="${#ids.prev('attributionType')}" th:text="${type.description}" class="form-check-label">문자</label>
+    </div>
+    <div>
+      <label for="attributionName">이름</label>
+      <input type="text" id="attributionName" name="attributionName" class="form-control" value="10000" th:value="${attribution.attributionName}" readonly>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-dark btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/attributions/{attributionId}/edit(attributionId=${attribution.id})}'|"
+                type="button">속성 수정</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-danger btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/attributions/{attributionId}/delete(attributionId=${attribution.id})}'|"
+                type="button">속성 삭제</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='list.html'"
+                th:onclick="|location.href='@{/attributions}'|"
+                type="button">목록으로</button>
+      </div>
+    </div>
+  </div> <!-- /container -->
+</div>
+</html>
