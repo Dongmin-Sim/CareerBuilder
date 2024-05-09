@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{location}">header</h1>
+  </div>
+  <div class="container">
+
+    <div class="py-5 text-center">
+      <h2 th:text="#{location.detail}">장소 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+      <label for="locationId">장소 ID</label>
+      <input type="text" id="locationId" name="locationId" class="form-control" value="1" th:value="${location.id}" readonly>
+    </div>
+    <div>
+      <label for="locationName">장소명</label>
+      <input type="text" id="locationName" name="locationName" class="form-control" value="상품A" th:value="${location.name}" readonly>
+    </div>
+    <div>
+      <label for="memo">메모</label>
+      <input type="text" id="memo" name="memo" class="form-control" value="10000" th:value="${location.memo}" readonly>
+    </div>
+
+    <hr class="my-4">
+    <!--  &lt;!&ndash;  single checkbox  &ndash;&gt;-->
+    <!--  <div>판매 여부</div>-->
+    <!--  <div>-->
+    <!--    <div class="form-check">-->
+    <!--      <label for="open" class="form-check-label">판매 오픈</label>-->
+    <!--      <input type="checkbox" id="open" th:field="${item.open}" class="form-check-input" disabled>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--  &lt;!&ndash;  multi checkbox  &ndash;&gt;-->
+    <!--  <div>등록 여부</div>-->
+    <!--  <div th:each="region: ${regions}" class="form-check, form-check-inline">-->
+    <!--    <input type="checkbox" th:field="${item.regions}" th:value="${region.key}" class="form-check-input" disabled>-->
+    <!--    <label th:for="${#ids.prev('regions')}" th:text="${region.value}" class="form-check-label">서울</label>-->
+    <!--  </div>-->
+
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-dark btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/locations/{locationId}/edit(locationId=${location.id})}'|"
+                type="button" th:text="#{location.edit}">수정 버튼</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-danger btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/locations/{locationId}/delete(locationId=${location.id})}'|"
+                type="button" th:text="#{location.delete}">삭제 버튼</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='list.html'"
+                th:onclick="|location.href='@{/locations}'|"
+                type="button">목록으로</button>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+</div>
+</html>
