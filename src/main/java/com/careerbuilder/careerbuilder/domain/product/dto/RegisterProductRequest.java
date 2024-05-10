@@ -27,4 +27,10 @@ public class RegisterProductRequest {
 
     @NotNull
     private BigDecimal price;
+
+    @NotNull
+    private Long locationId;
+
+    @NotNull
+    private Integer initialQuantity;
 }
