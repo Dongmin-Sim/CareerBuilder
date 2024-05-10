@@ -9,6 +9,7 @@ import com.careerbuilder.careerbuilder.domain.productattribution.dto.ProductAttr
 import com.careerbuilder.careerbuilder.domain.productattribution.entity.ProductAttribution;
 import com.careerbuilder.careerbuilder.domain.productattribution.service.ProductAttributionService;
 import com.careerbuilder.careerbuilder.domain.stock.business.StockBusiness;
+import com.careerbuilder.careerbuilder.domain.stock.dto.StockRequest;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
 import com.careerbuilder.careerbuilder.global.common.error.ProductErrorCode;
@@ -75,14 +76,14 @@ public class ProductBusiness {
                 .collect(Collectors.toList());
     }
 
-    public ProductDetailResponse getProductById(
+    public ProductWithAttributionsResponse getProductWithAttributionsById(
             Long productId
     ) {
         Product product = productService.getProductById(productId);
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();
@@ -94,21 +95,21 @@ public class ProductBusiness {
     }
 
     @Transactional
-    public ProductDetailResponse updateProductById(Long productId, UpdateProductRequest request) {
+    public ProductWithAttributionsResponse updateProductById(Long productId, UpdateProductRequest request) {
         Product product = productService.getProductById(productId);
 
         product.updateProduct(request);
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();
     }
 
     @Transactional
-    public ProductDetailResponse partialUpdateProductById(Long productId, PartialUpdateProductRequest request) {
+    public ProductWithAttributionsResponse partialUpdateProductById(Long productId, PartialUpdateProductRequest request) {
         Product product = productService.getProductById(productId);
 
         // request
@@ -116,7 +117,7 @@ public class ProductBusiness {
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();
