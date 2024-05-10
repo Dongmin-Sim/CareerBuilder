@@ -4,6 +4,7 @@ import com.careerbuilder.careerbuilder.domain.transactionproduct.entity.Transact
 import com.careerbuilder.careerbuilder.domain.transactionproduct.repository.TransactionProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class TransactionProductService {
         return transactionProductRepository.save(transactionProduct);
     }
 
-    public List<TransactionProduct> saveAll(List<TransactionProduct> transactionProducts) {
-        return transactionProductRepository.saveAll(transactionProducts);
+    public List<TransactionProduct> findTransactionProductListById(Long transactionId) {
+        return transactionProductRepository.findAllByTransactionId(transactionId);
     }
 }
