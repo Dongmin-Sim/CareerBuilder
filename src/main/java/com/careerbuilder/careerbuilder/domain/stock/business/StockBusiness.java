@@ -1,5 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.stock.business;
 
+import com.careerbuilder.careerbuilder.domain.stock.converter.StockConverter;
+import com.careerbuilder.careerbuilder.domain.stock.dto.StockResponse;
 import com.careerbuilder.careerbuilder.domain.stock.service.StockService;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +16,16 @@ import static com.careerbuilder.careerbuilder.domain.transaction.dto.Transaction
 public class StockBusiness {
 
     private final StockService stockService;
+    private final StockConverter stockConverter;
 
     @Transactional
-    public void increaseStockWithItemList(
-            Long locationId, List<Item> items
-    ) {
-        for (Item item : items) {
-            stockService.updateStockQuantity(
-                    locationId,
-                    item.getProductId(),
+    public StockResponse registerStock(StockRequest request) {
+        // stock 으로 만들기
+        Stock entity = stockConverter.toEntity(request);
+        Stock stock = stockService.saveStock(entity);
+        return stockConverter.toResponse(stock);
+    }
+
                     item.getQuantity()
             );
         }
