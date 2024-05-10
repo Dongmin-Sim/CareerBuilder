@@ -88,6 +88,11 @@ public class ProductBusiness {
                 .build();
     }
 
+    public ProductResponse getProductById(Long productId) {
+        Product product = productService.getProductById(productId);
+        return productConverter.toResponse(product);
+    }
+
     @Transactional
     public ProductDetailResponse updateProductById(Long productId, UpdateProductRequest request) {
         Product product = productService.getProductById(productId);
