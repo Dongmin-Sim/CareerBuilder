@@ -1,12 +1,8 @@
 package com.careerbuilder.careerbuilder.domain.location.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
