@@ -1,4 +1,4 @@
-package com.careerbuilder.careerbuilder.domain.transactionproduct.entity;
+package com.careerbuilder.careerbuilder.domain.transactionItem.entity;
 
 import com.careerbuilder.careerbuilder.global.common.baseentity.BaseEntity;
 import jakarta.persistence.*;
@@ -14,8 +14,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "transaction_product")
-public class TransactionProduct extends BaseEntity {
+@Table(name = "transaction_item")
+public class TransactionItem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
