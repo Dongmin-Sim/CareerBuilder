@@ -5,23 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionUpdateRequest {
-
-    private Long id;
-
-    private Long fromLocation;
-
-    private Long toLocation;
-
-    private Long partner;
-
-    private String memo;
-
-    private List<Item> items;
+public class Item {
+    Long productId;
+    int quantity;
 }

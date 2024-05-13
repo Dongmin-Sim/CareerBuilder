@@ -27,12 +27,4 @@ public class TransactionRegisterRequest {
     private String memo;
 
     private List<Item> items;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Item {
-        Long productId;
-        int quantity;
-    }
 }
