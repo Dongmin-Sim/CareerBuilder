@@ -9,12 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-    // select * from stock where locationId = ? and productId;
-    Stock findFirstByLocationIdAndProductIdOrderById(Long locationId, Long productId);
+    // select * from stock where locationId = ? and productId = ?;
+    Optional<Stock> findFirstByLocationIdAndProductIdOrderById(Long locationId, Long productId);
 
     // select * from stock where locationId = ?;
     List<Stock> findAllByLocationIdOrderById(Long locationId);
@@ -35,9 +36,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Modifying
     @Query("update Stock s set s.stockQuantity = s.stockQuantity + :quantity where s.locationId = :locationId and s.productId = :productId")
-    int updateStockQuantityIncreaseByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
+    int increaseStockQuantityByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
 
     @Modifying
     @Query("update Stock s set s.stockQuantity = s.stockQuantity - :quantity where s.locationId = :locationId and s.productId = :productId")
-    int updateStockQuantityDecreaseByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
+    int decreaseStockQuantityByLocationIdAnAndProductId(@Param("locationId") Long locationId, @Param("productId") Long productId, @Param("quantity") int quantity);
 }
