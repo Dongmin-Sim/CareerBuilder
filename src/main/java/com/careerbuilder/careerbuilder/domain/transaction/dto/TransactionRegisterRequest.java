@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -34,7 +32,7 @@ public class TransactionRegisterRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Item {
-        private Long productId;
-        private Integer quantity;
+        Long productId;
+        int quantity;
     }
 }
