@@ -1,9 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.transaction.controller;
 
 import com.careerbuilder.careerbuilder.domain.transaction.business.TransactionBusiness;
-import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionDetailResponse;
-import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionRegisterRequest;
-import com.careerbuilder.careerbuilder.domain.transaction.dto.TransactionResponse;
+import com.careerbuilder.careerbuilder.domain.transaction.dto.*;
 import com.careerbuilder.careerbuilder.global.common.api.Api;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -33,18 +31,19 @@ public class TransactionApiController {
     }
 
     @GetMapping("/{tx_id}")
-    public Api<TransactionDetailResponse> getTransactionById(
+    public Api<TransactionDetailWithProductListResponse> getTransactionById(
             @PathVariable("tx_id") @Positive Long transactionId
     ) {
-        var response = transactionBusiness.getTransactionById(transactionId);
+        var response = transactionBusiness.getTransactionDetailWithProductListById(transactionId);
         return Api.OK(response);
     }
 
     @PutMapping("/{tx_id}")
-    public Api<TransactionDetailResponse> updateTransactionById(
-            @PathVariable("tx_id") @Positive Long transactionId
+    public Api<TransactionResponse> updateTransactionById(
+            @PathVariable("tx_id") @Positive Long transactionId,
+            @RequestBody TransactionUpdateRequest request
     ) {
-        var response = transactionBusiness.updateTransactionById(transactionId);
+        var response = transactionBusiness.updateTransactionById(transactionId, request);
         return Api.OK(response);
     }
 
