@@ -4,7 +4,7 @@
 
 ## Design
 
-* [요구사항 설계](design/undefined.md)
+* [요구사항 설계](design/재고관리파트_v1_prd)
 * [Database 설계](design/database.md)
 
 ## Reference

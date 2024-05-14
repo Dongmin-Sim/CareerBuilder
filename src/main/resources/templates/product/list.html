@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+  <div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2" th:text="#{product}">header</h1>
+    </div>
+    <div class="container" style="max-width: 800px">
+    <div class="py-5 text-center">
+      <h2 th:text="#{product}"></h2>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-dark float-end"
+                onclick="location.href='addForm.html'"
+                th:onclick="|location.href='@{/products/add}'|"
+                type="button" th:text="#{product.add}"> 생성
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>이름</th>
+          <th>바코드</th>
+          <th>이미지</th>
+          <th>구매가</th>
+          <th>판매가</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+          <td><a href="detail.html" th:href="@{|/products/${product.id}|}" th:text="${product.id}">id</a></td>
+          <td><a href="detail.html" th:href="@{|/products/${product.id}|}" th:text="${product.name}">이름</a></td>
+          <td th:text="${product.barcode}">바코드</td>
+          <td th:text="${product.photoUrl}">이미지</td>
+          <td th:text="${product.cost}">구매가</td>
+          <td th:text="${product.price}">판매가</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='../index.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">홈으로</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</html>

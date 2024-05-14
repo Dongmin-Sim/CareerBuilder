@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{stock}">header</h1>
+  </div>
+
+  <div class="container">
+
+  <div class="py-5 text-center">
+    <h2 th:text="#{stock.detail}">상세</h2>
+  </div>
+
+    <div th:object="${stock}">
+      <div>
+        <label for="locationName">위치</label>
+        <input type="text" id="locationName" name="locationName" class="form-control" value="1" th:value="*{location.name}" readonly>
+      </div>
+      <div>
+        <label for="locationMemo">메모</label>
+        <input type="text" id="locationMemo" name="locationMemo" class="form-control" value="1" th:value="*{location.memo}" readonly>
+      </div>
+
+      <hr class="my-4">
+      <!--      table product : quantity -->
+      <table class="table">
+        <thead>
+        <tr>
+          <th>제품</th>
+          <th>재고수량</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr th:each="productQuantity : *{productQuantityMap}">
+            <td><a href="detail.html" th:href="@{|/products/${productQuantity.key.id}|}" th:text="${productQuantity.key.name}">상품</a></td>
+            <td th:text="${productQuantity.value}">수량</td>
+          </tr>
+        </tbody>
+      </table>
+
+  </div>
+  <hr class="my-4">
+
+
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg"
+              onclick="location.href='list.html'"
+              th:onclick="|location.href='@{/stocks}'|"
+              type="button">목록으로</button>
+    </div>
+  </div>
+</div> <!-- /container -->
+</div>
+
+</html>

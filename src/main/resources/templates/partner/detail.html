@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{partner}">header</h1>
+  </div>
+  <div class="container">
+
+    <div class="py-5 text-center">
+      <h2 th:text="#{partner.detail}">거래처 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+    <div th:object="${partner}">
+      <div>
+        <label for="partnerId">ID</label>
+        <input type="text" id="partnerId" name="partnerId" class="form-control" value="1" th:value="*{id}" readonly>
+      </div>
+      <div>
+        <label for="partnerType">종류</label>
+        <input type="text" id="partnerType" name="partnerType" class="form-control" value="입고처" th:value="*{partnerType.description}" readonly>
+      </div>
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" class="form-control" value="이름" th:value="*{name}" readonly>
+      </div>
+      <div>
+        <label for="phoneNumber">전화번호</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="전화번호" th:value="*{phoneNumber}" readonly>
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" class="form-control" value="이메일" th:value="*{email}" readonly>
+      </div>
+      <div>
+        <label for="address">주소</label>
+        <input type="text" id="address" name="address" class="form-control" value="주소" th:value="*{address}" readonly>
+      </div>
+    </div>
+    <hr class="my-4">
+
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-dark btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/partners/{partnerId}/edit(partnerId=${partner.id})}'|"
+                type="button" th:text="#{partner.edit}">거래처 수정</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-danger btn-lg"
+                onclick="location.href='editForm.html'"
+                th:onclick="|location.href='@{/partners/{partnerId}/delete(partnerId=${partner.id})}'|"
+                type="button" th:text="#{partner.delete}">거래처 삭제</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='list.html'"
+                th:onclick="|location.href='@{/partners}'|"
+                type="button">목록으로</button>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+</div>
+</html>
