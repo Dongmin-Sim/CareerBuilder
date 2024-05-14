@@ -16,7 +16,7 @@ public class ProductConverter {
             RegisterProductRequest request
     ) {
         return Optional.ofNullable(request)
-                .map(it -> {
+            .map(it -> {
                     return Product.builder()
                             .name(request.getName())
                             .barcode(request.getBarcode())

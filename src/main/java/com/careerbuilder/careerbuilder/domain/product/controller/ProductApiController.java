@@ -32,15 +32,15 @@ public class ProductApiController {
     }
 
     @GetMapping("/{productId}")
-    public Api<ProductDetailResponse> getProductById(
+    public Api<ProductWithAttributionsResponse> getProductById(
             @PathVariable Long productId
     ) {
-        var response = productBusiness.getProductById(productId);
+        var response = productBusiness.getProductWithAttributionsById(productId);
         return Api.OK(response);
     }
 
     @PutMapping("/{productId}")
-    public Api<ProductDetailResponse> updateProduct(
+    public Api<ProductWithAttributionsResponse> updateProduct(
             @PathVariable Long productId,
             @RequestBody @Valid UpdateProductRequest request
     ) {
@@ -49,7 +49,7 @@ public class ProductApiController {
     }
 
     @PatchMapping("/{productId}")
-    public Api<ProductDetailResponse> partialUpdateProduct(
+    public Api<ProductWithAttributionsResponse> partialUpdateProduct(
             @PathVariable Long productId,
             @RequestBody @Valid PartialUpdateProductRequest request
     ) {

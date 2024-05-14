@@ -1,11 +1,14 @@
 package com.careerbuilder.careerbuilder.domain.stock.converter;
 
+import com.careerbuilder.careerbuilder.domain.stock.dto.StockDetailResponse;
 import com.careerbuilder.careerbuilder.domain.stock.dto.StockRequest;
+import com.careerbuilder.careerbuilder.domain.stock.dto.StockResponse;
 import com.careerbuilder.careerbuilder.domain.stock.entity.Stock;
 import com.careerbuilder.careerbuilder.global.common.annotation.Converter;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Converter
@@ -18,6 +21,18 @@ public class StockConverter {
                             .locationId(request.getLocationId())
                             .productId(request.getProductId())
                             .stockQuantity(request.getStockQuantity())
+                            .build();
+                }).orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT_ERROR));
+    }
+
+    public StockResponse toResponse(Stock entity) {
+        return Optional.ofNullable(entity)
+                .map(it -> {
+                    return StockResponse.builder()
+                            .id(entity.getId())
+                            .productId(entity.getProductId())
+                            .locationId(entity.getLocationId())
+                            .stockQuantity(entity.getStockQuantity())
                             .build();
                 }).orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT_ERROR));
     }

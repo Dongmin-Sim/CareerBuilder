@@ -1,13 +1,10 @@
 package com.careerbuilder.careerbuilder.domain.transaction.entity.type;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
-public enum TransactionType {
-    IN("입고"), OUT("출고"), ADJUST("조정"), MOVE("이동"),
-    ;
+public enum TransactionStatus {
+    ACTIVE("활성화"), MODIFIED("수정"),  DELETED("삭제");
 
     private final String description;
 }

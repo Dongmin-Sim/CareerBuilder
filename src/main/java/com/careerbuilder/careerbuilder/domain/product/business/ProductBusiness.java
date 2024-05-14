@@ -8,7 +8,12 @@ import com.careerbuilder.careerbuilder.domain.productattribution.converter.Produ
 import com.careerbuilder.careerbuilder.domain.productattribution.dto.ProductAttributionResponse;
 import com.careerbuilder.careerbuilder.domain.productattribution.entity.ProductAttribution;
 import com.careerbuilder.careerbuilder.domain.productattribution.service.ProductAttributionService;
+import com.careerbuilder.careerbuilder.domain.stock.business.StockBusiness;
+import com.careerbuilder.careerbuilder.domain.stock.dto.StockRequest;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;
+import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
+import com.careerbuilder.careerbuilder.global.common.error.ProductErrorCode;
+import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -25,11 +30,41 @@ public class ProductBusiness {
     private final ProductAttributionService productAttributionService;
     private final ProductAttributionConverter productAttributionConverter;
 
+    private final StockBusiness stockBusiness;
+
     public ProductResponse register(
             RegisterProductRequest request
     ) {
+        // 제품명은 null 일 수 없다.
+        if (request.getName() == null) {
+            throw new ApiException(ErrorCode.NULL_POINT_ERROR);
+        }
+
+        // 제품명은 공백일 수 없다.
+        if (request.getName().isEmpty() || request.getName().isBlank()) {
+            throw new ApiException(ProductErrorCode.REQUEST_INVALIDATION);
+        }
+
+        // 초기 수량값은 null일 수 없다.
+        if (request.getInitialQuantity() == null) {
+            throw new ApiException(ErrorCode.NULL_POINT_ERROR);
+        }
+
         Product product = productConverter.toEntity(request);
         Product registered = productService.register(product);
+
+        // 초기 물량 등록
+        Long locationId = request.getLocationId();
+        Integer initialQuantity = request.getInitialQuantity();
+
+        StockRequest stockRequest = StockRequest.builder()
+                .locationId(locationId)
+                .productId(registered.getId())
+                .stockQuantity(initialQuantity)
+                .build();
+
+        stockBusiness.registerStock(stockRequest);
+
         return productConverter.toResponse(registered);
     }
 
@@ -41,35 +76,40 @@ public class ProductBusiness {
                 .collect(Collectors.toList());
     }
 
-    public ProductDetailResponse getProductById(
+    public ProductWithAttributionsResponse getProductWithAttributionsById(
             Long productId
     ) {
         Product product = productService.getProductById(productId);
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();
     }
 
+    public ProductResponse getProductById(Long productId) {
+        Product product = productService.getProductById(productId);
+        return productConverter.toResponse(product);
+    }
+
     @Transactional
-    public ProductDetailResponse updateProductById(Long productId, UpdateProductRequest request) {
+    public ProductWithAttributionsResponse updateProductById(Long productId, UpdateProductRequest request) {
         Product product = productService.getProductById(productId);
 
         product.updateProduct(request);
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();
     }
 
     @Transactional
-    public ProductDetailResponse partialUpdateProductById(Long productId, PartialUpdateProductRequest request) {
+    public ProductWithAttributionsResponse partialUpdateProductById(Long productId, PartialUpdateProductRequest request) {
         Product product = productService.getProductById(productId);
 
         // request
@@ -77,7 +117,7 @@ public class ProductBusiness {
 
         List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
 
-        return ProductDetailResponse.builder()
+        return ProductWithAttributionsResponse.builder()
                 .productResponse(productConverter.toResponse(product))
                 .attributionResponseList(productAttributionResponseList)
                 .build();

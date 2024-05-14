@@ -3,23 +3,22 @@ package com.careerbuilder.careerbuilder.domain.transaction.business.transactionT
 import com.careerbuilder.careerbuilder.domain.transaction.entity.type.TransactionType;
 import com.careerbuilder.careerbuilder.global.common.error.TransactionError;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class TypeTransactionFactory {
-    private final List<TypeTransaction> actions;
+public class ActionFactory {
+    private final List<Action> actions;
 
-    public TypeTransactionFactory(List<TypeTransaction> actions) {
+    public ActionFactory(List<Action> actions) {
         this.actions = actions;
     }
 
-    public TypeTransaction getTransaction(TransactionType type) {
+    public Action getAction(TransactionType type) {
         return this.actions.stream()
-                .filter(action -> type.equals(action.getType()))
+                .filter(action -> action.canSupport(type))
                 .findFirst()
-                .orElseThrow(() -> new ApiException(TransactionError.TRANSACTION_TYPE_ERROR));
+                .orElseThrow(()->new ApiException(TransactionError.TRANSACTION_TYPE_ERROR));
     }
 }
