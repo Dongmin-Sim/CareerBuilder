@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{transaction}">header</h1>
+  </div>
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2 th:text="#{transaction.add}">등록</h2>
+    </div>
+
+    <form action="detail.html" th:action th:object="${transaction}" method="post">
+      <!--  transaction type select box    -->
+      <select id="transactionType" name="transactionType"
+              th:field="*{transactionType}" class="form-select">
+        <option value="none">==거래 유형 선택==</option>
+        <option th:each="type : ${transactionTypes}" th:value="${type.name()}"
+                th:text="${type.description}">입고</option>
+      </select>
+
+      <hr class="my-4">
+
+      <div id="fromLocationDiv" type="hidden">
+        <label for="fromLocation" class="form-label">출고지</label>
+        <input type="text" id="fromLocation" th:field="*{fromLocation}" class="form-control" placeholder="위치를 입력하세요"/>
+      </div>
+      <div id="toLocationDiv">
+        <label for="toLocation" class="form-label">입고지</label>
+        <input type="text" id="toLocation" th:field="*{toLocation}" class="form-control" placeholder="위치를 입력하세요" />
+      </div>
+
+      <hr class="my-4">
+
+      <div>
+        <label for="partner" class="form-label">거래처:</label>
+        <input type="text" id="partner" th:field="*{partner}" class="form-control" placeholder="거래처를 입력하세요" />
+      </div>
+
+      <hr class="my-4">
+
+      <!--  product Items    -->
+      <div id="itemsContainer">
+        <!-- 여기에 동적으로 생성되는 아이템 폼이 들어갈 것임 -->
+      </div>
+
+      <hr class="my-4">
+
+      <button type="button" id="addItemBtn" class="w-100 btn btn-success btn-sm">아이템 추가</button>
+
+      <hr class="my-4">
+
+      <div>
+        <label for="memo" class="form-label">메모</label>
+        <textarea name="memo" id="memo" th:field="*{memo}" class="form-control" ></textarea>
+      </div>
+      <script th:inline="javascript">
+        $(document).ready(function () {
+          var itemCount = 0;
+
+          // 아이템 추가 버튼 클릭 시
+          $('#addItemBtn').click(function () {
+            itemCount++;
+            var itemHtml =
+                    '<div id="item' + itemCount + '">' +
+                      '<div class="row">'+
+                      '<div class="col">'+
+                        '<label for="product">상품:</label>' +
+                        '<input type="text" id="product' + itemCount + '" name="items[' + (itemCount - 1) + '].productId" class="form-control"/>' +
+                      '</div>'+
+                      '<div class="col">'+
+                        '<label for="quantity">수량:</label>' +
+                        '<input type="text" id="quantity' + itemCount + '" name="items[' + (itemCount - 1) + '].quantity" class="form-control"/>' +
+                      '</div>'+
+                      '<div class="col">'+
+                        '<button type="button" onclick="removeItem(' + itemCount + ')" class="w-100 btn btn-danger btn-lgr">삭제</button>' +
+                      '</div>'+
+                      '</div>'+
+                    '</div>';
+            $('#itemsContainer').append(itemHtml);
+          });
+
+          // 아이템 삭제 함수
+          window.removeItem = function (itemId) {
+            $('#item' + itemId).remove();
+          };
+        });
+      </script>
+
+
+      <script th:inline="javascript">
+        console.log("addform");
+        $('#fromLocationDiv').hide();
+        $('#toLocationDiv').hide();
+
+        $('#transactionType').change(function() {
+          var selectedType = $(this).val();
+          if (selectedType === 'IN' || selectedType === 'ADJUST') {
+            $('#toLocationDiv').show();
+            $('#fromLocationDiv').hide();
+          } else if (selectedType === 'OUT') {
+            $('#toLocationDiv').hide();
+            $('#fromLocationDiv').show();
+          } else if (selectedType === 'MOVE') {
+            $('#toLocationDiv').show();
+            $('#fromLocationDiv').show();
+          } else {
+            $('#fromLocationDiv').hide();
+            $('#toLocationDiv').hide();
+          }
+        });
+      </script>
+
+      <hr class="my-4">
+      <div class="row">
+        <div class="col">
+          <button class="w-100 btn btn-dark btn-lg" type="submit" th:text="#{transaction.add}">등록 버튼</button>
+        </div>
+        <div class="col">
+          <button class="w-100 btn btn-secondary btn-lg"
+                  onclick="location.href='list.html'"
+                  th:onclick="|location.href='@{/transactions}'|"
+                  type="button">취소
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div> <!-- /container -->
+
+</div>
+</html>

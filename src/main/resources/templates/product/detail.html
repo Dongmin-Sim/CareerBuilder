@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{product}">header</h1>
+  </div>
+  <div class="container">
+
+  <div class="py-5 text-center">
+    <h2 th:text="#{product.detail}">상세</h2>
+  </div>
+
+  <!-- 추가 -->
+  <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+  <div th:object="${product}">
+    <div>
+      <label for="productId">ID</label>
+      <input type="text" id="productId" name="productId" class="form-control" value="1" th:value="*{id}" readonly disabled>
+    </div>
+    <div>
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" class="form-control" value="이름" th:value="*{name}" readonly disabled>
+    </div>
+    <div>
+      <label for="barcode">바코드</label>
+      <input type="text" id="barcode" name="barcode" class="form-control" value="바코드" th:value="*{barcode}" readonly disabled>
+    </div>
+    <div>
+      <label for="photoUrl">이미지</label>
+      <input type="image" id="photoUrl" name="photoUrl" class="form-control" value="이미지" th:value="*{photoUrl}" readonly>
+    </div>
+    <div>
+      <label for="cost">구매가</label>
+      <input type="text" id="cost" name="cost" class="form-control" value="구매가" th:value="*{cost}" readonly disabled>
+    </div>
+    <div>
+      <label for="price">판매가</label>
+      <input type="text" id="price" name="price" class="form-control" value="판매가" th:value="*{price}" readonly disabled>
+    </div>
+  </div>
+  <hr class="my-4">
+
+
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-dark btn-lg"
+              onclick="location.href='editForm.html'"
+              th:onclick="|location.href='@{/products/{productId}/edit(productId=${product.id})}'|"
+              type="button" th:text="#{product.edit}">수정</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-danger btn-lg"
+              onclick="location.href='editForm.html'"
+              th:onclick="|location.href='@{/products/{productId}/delete(productId=${product.id})}'|"
+              type="button" th:text="#{product.delete}">삭제</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg"
+              onclick="location.href='list.html'"
+              th:onclick="|location.href='@{/products}'|"
+              type="button">목록으로</button>
+    </div>
+  </div>
+
+</div> <!-- /container -->
+</div>
+
+</html>

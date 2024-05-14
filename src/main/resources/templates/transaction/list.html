@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{transaction}">header</h1>
+  </div>
+  <div class="container" style="max-width: 1300px">
+    <div class="py-5 text-center">
+      <h2 th:text="#{transaction}"></h2>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-dark float-end"
+                onclick="location.href='addForm.html'"
+                th:onclick="|location.href='@{/transactions/add}'|"
+                type="button" th:text="#{transaction.add}"> 생성
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>거래유형</th>
+          <th>출발지</th>
+          <th>도착지</th>
+          <th>거래처</th>
+          <th>메모</th>
+          <th>상태</th>
+          <th>생성일자</th>
+          <th>수정일자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactions}">
+          <td><a href="detail.html" th:href="@{|/transactions/${transaction.id}|}" th:text="${transaction.id}">id</a></td>
+          <td th:text="${transaction.transactionType.description}">거래유형</td>
+          <td><a href="detail.html" th:href="@{|/locations/${transaction.fromLocation}|}" th:text="${transaction.fromLocation}">출발지</a></td>
+          <td><a href="detail.html" th:href="@{|/locations/${transaction.toLocation}|}" th:text="${transaction.toLocation}">출발지</a></td>
+          <td><a href="detail.html" th:href="@{|/locations/${transaction.partner}|}" th:text="${transaction.partner}">거래처</a></td>
+          <td th:text="${transaction.memo}">메모</td>
+          <td th:text="${transaction.status}">상태</td>
+          <td th:text="${transaction.createdAt}">생성일</td>
+          <td th:text="${transaction.updatedAt}">수정일</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='../index.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">홈으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>

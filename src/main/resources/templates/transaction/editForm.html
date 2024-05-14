@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/index}">
+
+<div layout:fragment="content">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" th:text="#{transaction}">header</h1>
+  </div>
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2 th:text="#{product.edit}">수정</h2>
+    </div>
+
+    <form action="detail.html" th:action th:object="${transaction}" method="post">
+      <div>
+        <label for="id" class="form-label">ID</label>
+        <input type="text" id="id" name="id" class="form-control" th:field="*{id}" th:value="*{id}" readonly disabled>
+      </div>
+      <div>
+        <label for="transactionType" class="form-label">유형</label>
+        <input type="text" id="transactionType" name="transactionType" class="form-control" value="거래유형" th:field="*{transactionType.description}" readonly disabled>
+      </div>
+      <div th:if="*{fromLocation!=null}">
+        <label for="fromLocation">출고지</label>
+        <input type="text" id="fromLocation" name="fromLocation" class="form-control" value="출고지" th:field="*{fromLocation}" th:value="*{fromLocation.name}">
+      </div>
+      <div th:if="*{toLocation!=null}">
+        <label for="toLocation">입고지</label>
+        <input type="text" id="toLocation" name="toLocation" class="form-control" value="입고지" th:field="*{toLocation}" th:value="*{toLocation.name}">
+      </div>
+      <div th:if="*{partner!=null}">
+        <label for="partner">거래처</label>
+        <input type="text" id="partner" name="partner" class="form-control" value="거래처" th:field="*{partner.name}">
+      </div>
+      <div th:unless="*{partner!=null}">
+        <label>거래처</label>
+        <input type="text" class="form-control" placeholder="등록된 거래처가 없습니다." readonly disabled>
+      </div>
+      <div>
+        <label for="status" class="form-label">거래상태</label>
+        <input type="text" id="status" name="status" class="form-control" value="거래상태" th:field="*{status}" readonly disabled>
+      </div>
+
+      <!--  product Items    -->
+      <div id="itemsContainer" th:each="item, iterIdx : ${transaction.items}">
+        <!-- 여기에 동적으로 생성되는 아이템 폼이 들어갈 것임 -->
+        <div th:id="'item'+${iterIdx.index}">
+          <div class="row">
+            <div class="col">
+              <label th:attr="for=${'product'+ iterIdx.index}">상품</label>
+              <input type="text" th:id="'product' + iterStat.index" th:value="${item.product.id}" class="form-control"/>
+            </div>
+            <div class="col">
+              <label th:attr="for=${'quantity'+ iterIdx.index}">수량:</label>
+              <input type="text" th:id="'quantity' + iterStat.index" th:value="${item.quantity}" class="form-control"/>
+            </div>
+            <div class="col">
+              <button type="button"
+                      onclick="removeItem(' + itemCount + ')"
+                      th:onclick="'removeItem('+${iterIdx.index}+')'"
+                      class="w-100 btn btn-danger btn-lgr">
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <button type="button" id="addItemBtn" class="w-100 btn btn-success btn-sm">아이템 추가</button>
+
+      <hr class="my-4">
+
+      <div>
+        <label for="memo" class="form-label">메모</label>
+        <textarea name="memo" id="memo" th:field="*{memo}" class="form-control" ></textarea>
+      </div>
+      <script th:inline="javascript">
+        $(document).ready(function () {
+          var itemCount = 0;
+
+          // 아이템 추가 버튼 클릭 시
+          $('#addItemBtn').click(function () {
+            itemCount++;
+            var itemHtml =
+                    '<div id="item' + itemCount + '">' +
+                    '<div class="row">'+
+                    '<div class="col">'+
+                    '<label for="product">상품:</label>' +
+                    '<input type="text" id="product' + itemCount + '" name="items[' + (itemCount - 1) + '].productId" class="form-control"/>' +
+                    '</div>'+
+                    '<div class="col">'+
+                    '<label for="quantity">수량:</label>' +
+                    '<input type="text" id="quantity' + itemCount + '" name="items[' + (itemCount - 1) + '].quantity" class="form-control"/>' +
+                    '</div>'+
+                    '<div class="col">'+
+                    '<button type="button" onclick="removeItem(' + itemCount + ')" class="w-100 btn btn-danger btn-lgr">삭제</button>' +
+                    '</div>'+
+                    '</div>'+
+                    '</div>';
+            $('#itemsContainer').append(itemHtml);
+          });
+
+          // 아이템 삭제 함수
+          window.removeItem = function (itemId) {
+            $('#item' + itemId).remove();
+          };
+        });
+      </script>
+
+
+      <script th:inline="javascript">
+        console.log("addform");
+        $('#fromLocationDiv').hide();
+        $('#toLocationDiv').hide();
+
+        $('#transactionType').change(function() {
+          var selectedType = $(this).val();
+          if (selectedType === 'IN' || selectedType === 'ADJUST') {
+            $('#toLocationDiv').show();
+            $('#fromLocationDiv').hide();
+          } else if (selectedType === 'OUT') {
+            $('#toLocationDiv').hide();
+            $('#fromLocationDiv').show();
+          } else if (selectedType === 'MOVE') {
+            $('#toLocationDiv').show();
+            $('#fromLocationDiv').show();
+          } else {
+            $('#fromLocationDiv').hide();
+            $('#toLocationDiv').hide();
+          }
+        });
+      </script>
+
+      <hr class="my-4">
+
+      <div class="row">
+<!--        <div class="col">-->
+<!--          <button class="w-100 btn btn-dark btn-lg" type="submit">저장</button>-->
+<!--        </div>-->
+        <div class="col">
+          <button class="w-100 btn btn-secondary btn-lg"
+                  onclick="location.href='detail.html'"
+                  th:onclick="|location.href='@{/transactions/{transactionId}(transactionId=${transaction.id})}'|"
+                  type="button">취소</button>
+        </div>
+      </div>
+
+    </form>
+  </div> <!-- /container -->
+</div>
+</html>
