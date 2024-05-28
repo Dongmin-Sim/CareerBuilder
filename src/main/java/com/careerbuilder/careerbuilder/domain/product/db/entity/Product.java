@@ -1,7 +1,7 @@
-package com.careerbuilder.careerbuilder.domain.product.entity;
+package com.careerbuilder.careerbuilder.domain.product.db.entity;
 
-import com.careerbuilder.careerbuilder.domain.product.dto.PartialUpdateProductRequest;
-import com.careerbuilder.careerbuilder.domain.product.dto.UpdateProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.PartialUpdateProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.UpdateProductRequest;
 import com.careerbuilder.careerbuilder.global.common.baseentity.BaseEntity;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;

@@ -1,8 +1,8 @@
 package com.careerbuilder.careerbuilder.domain.product.controller;
 
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductWithAttributionsResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductWithAttributionsResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

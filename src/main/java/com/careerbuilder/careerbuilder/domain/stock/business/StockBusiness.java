@@ -2,9 +2,9 @@ package com.careerbuilder.careerbuilder.domain.stock.business;
 
 import com.careerbuilder.careerbuilder.domain.location.business.LocationBusiness;
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationResponse;
-import com.careerbuilder.careerbuilder.domain.product.converter.ProductConverter;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.business.converter.ProductConverter;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
 import com.careerbuilder.careerbuilder.domain.stock.converter.StockConverter;
 import com.careerbuilder.careerbuilder.domain.stock.dto.StockDetailResponse;

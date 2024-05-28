@@ -1,4 +1,4 @@
-package com.careerbuilder.careerbuilder.domain.product.dto;
+package com.careerbuilder.careerbuilder.domain.product.business.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

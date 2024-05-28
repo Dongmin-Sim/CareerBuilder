@@ -1,8 +1,8 @@
-package com.careerbuilder.careerbuilder.domain.product.converter;
+package com.careerbuilder.careerbuilder.domain.product.business.converter;
 
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.RegisterProductRequest;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.RegisterProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import com.careerbuilder.careerbuilder.global.common.annotation.Converter;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;

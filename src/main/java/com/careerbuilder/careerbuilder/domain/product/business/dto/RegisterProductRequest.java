@@ -1,10 +1,6 @@
-package com.careerbuilder.careerbuilder.domain.product.dto;
+package com.careerbuilder.careerbuilder.domain.product.business.dto;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +12,25 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductResponse {
+public class RegisterProductRequest {
 
-    private Long id;
-
+    @NotBlank
+    @Size(min = 2, max = 255)
     private String name;
 
     private String barcode;
 
     private String photoUrl;
 
+    @NotNull
     private BigDecimal cost;
 
+    @NotNull
     private BigDecimal price;
+
+    @NotNull
+    private Long locationId;
+
+    @NotNull
+    private Integer initialQuantity;
 }

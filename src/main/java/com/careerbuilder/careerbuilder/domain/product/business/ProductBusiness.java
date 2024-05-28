@@ -1,13 +1,12 @@
 package com.careerbuilder.careerbuilder.domain.product.business;
 
-import com.careerbuilder.careerbuilder.domain.product.converter.ProductConverter;
-import com.careerbuilder.careerbuilder.domain.product.dto.*;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.business.converter.ProductAttributionConverter;
+import com.careerbuilder.careerbuilder.domain.product.business.converter.ProductConverter;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.*;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttribution;
+import com.careerbuilder.careerbuilder.domain.product.service.ProductAttributionService;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
-import com.careerbuilder.careerbuilder.domain.productattribution.converter.ProductAttributionConverter;
-import com.careerbuilder.careerbuilder.domain.productattribution.dto.ProductAttributionResponse;
-import com.careerbuilder.careerbuilder.domain.productattribution.entity.ProductAttribution;
-import com.careerbuilder.careerbuilder.domain.productattribution.service.ProductAttributionService;
 import com.careerbuilder.careerbuilder.domain.stock.business.StockBusiness;
 import com.careerbuilder.careerbuilder.domain.stock.dto.StockRequest;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;

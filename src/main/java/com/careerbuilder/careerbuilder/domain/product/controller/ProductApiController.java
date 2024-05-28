@@ -1,6 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.product.controller;
 
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.*;
 import com.careerbuilder.careerbuilder.domain.product.dto.*;
 import com.careerbuilder.careerbuilder.global.common.api.Api;
 import jakarta.validation.Valid;

@@ -1,9 +1,8 @@
-package com.careerbuilder.careerbuilder.domain.productattribution.dto;
+package com.careerbuilder.careerbuilder.domain.product.business.dto;
 
 
 import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
-import jakarta.persistence.*;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

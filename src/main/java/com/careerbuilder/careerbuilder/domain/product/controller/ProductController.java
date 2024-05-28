@@ -1,10 +1,10 @@
 package com.careerbuilder.careerbuilder.domain.product.controller;
 
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductWithAttributionsResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.RegisterProductRequest;
-import com.careerbuilder.careerbuilder.domain.product.dto.UpdateProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductWithAttributionsResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.RegisterProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

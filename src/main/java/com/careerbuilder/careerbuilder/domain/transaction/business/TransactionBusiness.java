@@ -6,7 +6,7 @@ import com.careerbuilder.careerbuilder.domain.location.service.LocationService;
 import com.careerbuilder.careerbuilder.domain.partner.business.PartnerBusiness;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerResponse;
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.Action;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.ActionFactory;

@@ -1,6 +1,5 @@
-package com.careerbuilder.careerbuilder.domain.product.dto;
+package com.careerbuilder.careerbuilder.domain.product.business.dto;
 
-import com.careerbuilder.careerbuilder.domain.productattribution.dto.ProductAttributionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

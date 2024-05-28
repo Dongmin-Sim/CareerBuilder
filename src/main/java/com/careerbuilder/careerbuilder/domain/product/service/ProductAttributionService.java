@@ -1,7 +1,7 @@
-package com.careerbuilder.careerbuilder.domain.productattribution.service;
+package com.careerbuilder.careerbuilder.domain.product.service;
 
-import com.careerbuilder.careerbuilder.domain.productattribution.entity.ProductAttribution;
-import com.careerbuilder.careerbuilder.domain.productattribution.repository.ProductAttributionRepository;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttribution;
+import com.careerbuilder.careerbuilder.domain.product.db.repository.ProductAttributionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

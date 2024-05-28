@@ -1,12 +1,11 @@
 package com.careerbuilder.careerbuilder.domain.product.service;
 
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
-import com.careerbuilder.careerbuilder.domain.product.repository.ProductRepository;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.db.repository.ProductRepository;
 import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.careerbuilder.careerbuilder.global.common.error.ProductErrorCode.PRODUCT_NOT_FOUND;
