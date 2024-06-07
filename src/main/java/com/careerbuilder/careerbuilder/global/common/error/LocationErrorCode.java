@@ -8,11 +8,12 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum LocationErrorCode implements ErrorCodeIfs {
 
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), 4400, ErrorType.CLIENT, "해당 위치를 찾을 수 없음."),
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "location_not_found", 4400, ErrorType.CLIENT, "해당 위치를 찾을 수 없습니다."),
     ;
 
     private final Integer httpStatusCode;
-    private final Integer errorCode;
+    private final String errorCode;
+    private final Integer errorCodeNum;
     private final ErrorType errorType;
     private final String errorMessage;
 }
