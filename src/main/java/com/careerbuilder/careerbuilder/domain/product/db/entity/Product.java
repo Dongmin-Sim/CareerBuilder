@@ -31,10 +31,10 @@ public class Product extends BaseEntity {
     @Column(length = 200)
     private String photoUrl;
 
-    @Column(precision = 12, scale = 4)
+    @Column(precision = 12, scale = 4, nullable = false)
     private BigDecimal cost;
 
-    @Column(precision = 12, scale = 4)
+    @Column(precision = 12, scale = 4, nullable = false)
     private BigDecimal price;
 
     public void updateProduct(ProductRequestDto.UpdateProductDto request) {

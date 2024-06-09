@@ -1,6 +1,5 @@
 package com.careerbuilder.careerbuilder.domain.product.db.entity;
 
-import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
 import com.careerbuilder.careerbuilder.global.common.baseentity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,13 +20,11 @@ public class ProductAttribution extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(nullable = false)
+    private Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "attribution_id")
-    private Attribution Attribution;
+    @Column(nullable = false)
+    private Long attributionId;
 
     @Column(length = 100)
     private String attributionValue;
