@@ -4,7 +4,9 @@ public interface ErrorCodeIfs {
 
     Integer getHttpStatusCode();
 
-    Integer getErrorCode();
+    String getErrorCode();
+
+    Integer getErrorCodeNum();
 
     ErrorType getErrorType();
 

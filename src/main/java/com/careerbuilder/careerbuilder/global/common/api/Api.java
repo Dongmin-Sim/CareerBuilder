@@ -2,41 +2,39 @@ package com.careerbuilder.careerbuilder.global.common.api;
 
 
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCodeIfs;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class Api<T>{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Api<T> {
 
-    private Result result;
-
-    private T body;
+    private boolean success;
+    private Error error;
+    private T data;
 
     public static <T> Api<T> OK(T data) {
         return Api.<T>builder()
-                .result(Result.OK())
-                .body(data)
+                .success(true)
+                .error(null)
+                .data(data)
                 .build();
     }
 
-    public static <T> Api<T> ERROR(Result result) {
+    public static <T> Api<T> ERROR(Error error) {
         return Api.<T>builder()
-                .result(result)
+                .success(false)
+                .error(error)
+                .data(null)
                 .build();
     }
 
     public static <T> Api<T> ERROR(ErrorCodeIfs errorCodeIfs) {
         return Api.<T>builder()
-                .result(Result.ERROR(errorCodeIfs))
-                .build();
-    }
-
-    public static <T> Api<T> ERROR(ErrorCodeIfs errorCodeIfs, String errorMessage) {
-        return Api.<T>builder()
-                .result(Result.ERROR(errorCodeIfs, errorMessage))
+                .success(false)
+                .error(Error.ERROR(errorCodeIfs))
+                .data(null)
                 .build();
     }
 }

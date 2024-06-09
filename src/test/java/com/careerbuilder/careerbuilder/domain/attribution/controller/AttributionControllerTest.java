@@ -1,7 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.attribution.controller;
 
 import com.careerbuilder.careerbuilder.domain.attribution.business.AttributionBusiness;
-import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponse;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ class AttributionControllerTest {
     void givenAttributionId_whenRequestingAttributionsPage_thenReturnsAttributionsPage() throws Exception {
         // Given
         given(attributionBusiness.getAttributionById(any()))
-                .willReturn(AttributionResponse.builder().build());
+                .willReturn(AttributionResponseDto.builder().build());
 
         long attributionId = 1L;
         // When & Then
@@ -71,7 +71,7 @@ class AttributionControllerTest {
     void givenAttributionId_whenRegisterUpdateAttribution_thenReturnsAttributionsUpdatePage() throws Exception {
         // given
         Long attributionId = 1L;
-        AttributionResponse response = AttributionResponse.builder()
+        AttributionResponseDto response = AttributionResponseDto.builder()
                 .id(attributionId)
                 .build();
 

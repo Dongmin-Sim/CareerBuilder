@@ -1,7 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.attribution.controller;
 
 import com.careerbuilder.careerbuilder.domain.attribution.business.AttributionBusiness;
-import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponse;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
 import com.careerbuilder.careerbuilder.domain.attribution.dto.RegisterAttributionRequest;
 import com.careerbuilder.careerbuilder.domain.attribution.dto.UpdateAttributionNameRequest;
 import com.careerbuilder.careerbuilder.domain.attribution.entity.type.AttributionType;
@@ -22,7 +22,7 @@ public class AttributionController {
 
     @GetMapping
     public String attributions(Model model) {
-        List<AttributionResponse> attributionList = attributionBusiness.getAttributionList();
+        List<AttributionResponseDto> attributionList = attributionBusiness.getAttributionList();
         model.addAttribute("attributions", attributionList);
         return "attribution/list";
     }
@@ -32,7 +32,7 @@ public class AttributionController {
             @PathVariable Long attributionId,
             Model model
     ) {
-        AttributionResponse attribution = attributionBusiness.getAttributionById(attributionId);
+        AttributionResponseDto attribution = attributionBusiness.getAttributionById(attributionId);
         model.addAttribute("attribution", attribution);
         return "attribution/detail";
     }
@@ -48,7 +48,7 @@ public class AttributionController {
             @ModelAttribute RegisterAttributionRequest attributionRequest,
             RedirectAttributes redirectAttributes
     ) {
-        AttributionResponse attribution = attributionBusiness.register(attributionRequest);
+        AttributionResponseDto attribution = attributionBusiness.register(attributionRequest);
 
         redirectAttributes.addAttribute("attributionId", attribution.getId());
         redirectAttributes.addAttribute("status", true);
@@ -60,7 +60,7 @@ public class AttributionController {
             @PathVariable Long attributionId,
             Model model
     ) {
-        AttributionResponse attribution = attributionBusiness.getAttributionById(attributionId);
+        AttributionResponseDto attribution = attributionBusiness.getAttributionById(attributionId);
         model.addAttribute("attribution", attribution);
         return "attribution/editForm";
     }
@@ -70,7 +70,7 @@ public class AttributionController {
             @PathVariable Long attributionId,
             @ModelAttribute UpdateAttributionNameRequest updateAttributionNameRequest
     ) {
-        AttributionResponse response = attributionBusiness.updateAttributionNameById(attributionId, updateAttributionNameRequest);
+        AttributionResponseDto response = attributionBusiness.updateAttributionNameById(attributionId, updateAttributionNameRequest);
         return "redirect:/attributions/{attributionId}";
     }
 

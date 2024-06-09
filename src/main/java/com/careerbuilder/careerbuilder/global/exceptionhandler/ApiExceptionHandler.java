@@ -23,23 +23,14 @@ public class ApiExceptionHandler {
     public ResponseEntity<Api<Object>> apiException(
             ApiException apiException
     ) {
-        log.error("[Global exception] : ", apiException);
+        log.error("[Api Exception Handler] : ", apiException);
+        log.error("[Exception message] : {}", apiException.getErrorMessage());
 
         ErrorCodeIfs errorCodeIfs = apiException.getErrorCodeIfs();
 
         return ResponseEntity
                 .status(errorCodeIfs.getHttpStatusCode())
-                .body(Api.ERROR(errorCodeIfs, apiException.getErrorMessage()));
+                .body(Api.ERROR(errorCodeIfs));
     }
-    @ExceptionHandler({HandlerMethodValidationException.class, MethodArgumentNotValidException.class})
-    public ResponseEntity<Api<Object>> validationException(
-            Exception exception
-    ) {
-        // TODO Exception 메시지 포맷 정리 필요
-        log.error("validationException : {}", exception.getMessage());
 
-        return ResponseEntity
-                .status(ErrorCode.VALIDATION_ERROR.getHttpStatusCode())
-                .body(Api.ERROR(ErrorCode.VALIDATION_ERROR, "유효하지 않은 요청입니다."));
-    }
 }

@@ -1,136 +1,120 @@
 package com.careerbuilder.careerbuilder.domain.product.business;
 
-import com.careerbuilder.careerbuilder.domain.product.converter.ProductConverter;
-import com.careerbuilder.careerbuilder.domain.product.dto.*;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
+import com.careerbuilder.careerbuilder.domain.attribution.converter.AttributionConverter;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
+import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
+import com.careerbuilder.careerbuilder.domain.attribution.service.AttributionService;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto.ProductWithAttributionDto;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttribution;
+import com.careerbuilder.careerbuilder.domain.product.service.ProductAttributionService;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
-import com.careerbuilder.careerbuilder.domain.productattribution.converter.ProductAttributionConverter;
-import com.careerbuilder.careerbuilder.domain.productattribution.dto.ProductAttributionResponse;
-import com.careerbuilder.careerbuilder.domain.productattribution.entity.ProductAttribution;
-import com.careerbuilder.careerbuilder.domain.productattribution.service.ProductAttributionService;
-import com.careerbuilder.careerbuilder.domain.stock.business.StockBusiness;
-import com.careerbuilder.careerbuilder.domain.stock.dto.StockRequest;
+import com.careerbuilder.careerbuilder.domain.stock.entity.Stock;
+import com.careerbuilder.careerbuilder.domain.stock.service.StockService;
 import com.careerbuilder.careerbuilder.global.common.annotation.Business;
-import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
-import com.careerbuilder.careerbuilder.global.common.error.ProductErrorCode;
-import com.careerbuilder.careerbuilder.global.common.exception.ApiException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductAttributionResponseDto.AttributionValueResponseDto;
+import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDto.*;
+import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto.ProductDto;
+
 @Business
 @RequiredArgsConstructor
+@Transactional
 public class ProductBusiness {
 
     private final ProductService productService;
-    private final ProductConverter productConverter;
-
     private final ProductAttributionService productAttributionService;
-    private final ProductAttributionConverter productAttributionConverter;
+    private final StockService stockService;
+    private final AttributionService attributionService;
 
-    private final StockBusiness stockBusiness;
-
-    public ProductResponse register(
-            RegisterProductRequest request
-    ) {
-        // 제품명은 null 일 수 없다.
-        if (request.getName() == null) {
-            throw new ApiException(ErrorCode.NULL_POINT_ERROR);
-        }
-
-        // 제품명은 공백일 수 없다.
-        if (request.getName().isEmpty() || request.getName().isBlank()) {
-            throw new ApiException(ProductErrorCode.REQUEST_INVALIDATION);
-        }
-
-        // 초기 수량값은 null일 수 없다.
-        if (request.getInitialQuantity() == null) {
-            throw new ApiException(ErrorCode.NULL_POINT_ERROR);
-        }
-
-        Product product = productConverter.toEntity(request);
+    public ProductDto register(CreateProductDto request) {
+        // 제품 등록
+        Product product = request.toDomain();
         Product registered = productService.register(product);
-
-        // 초기 물량 등록
-        Long locationId = request.getLocationId();
-        Integer initialQuantity = request.getInitialQuantity();
-
-        StockRequest stockRequest = StockRequest.builder()
-                .locationId(locationId)
-                .productId(registered.getId())
-                .stockQuantity(initialQuantity)
-                .build();
-
-        stockBusiness.registerStock(stockRequest);
-
-        return productConverter.toResponse(registered);
+        // 초기 재고 등록
+        stockService.saveStock(
+                Stock.builder()
+                        .productId(registered.getId())
+                        .locationId(request.locationId())
+                        .stockQuantity(request.initialQuantity())
+                        .build()
+        );
+        return ProductDto.fromDomain(registered);
     }
 
-
-    public List<ProductResponse> getProductList() {
+    @Transactional(readOnly = true)
+    public List<ProductDto> getProductList() {
         List<Product> productList = productService.getProductList();
+
         return productList.stream()
-                .map(productConverter::toResponse)
+                .map(ProductDto::fromDomain)
                 .collect(Collectors.toList());
     }
 
-    public ProductWithAttributionsResponse getProductWithAttributionsById(
+    @Transactional(readOnly = true)
+    public ProductDto getProductById(Long productId) {
+        Product product = productService.getProductById(productId);
+        return ProductDto.fromDomain(product);
+    }
+
+    @Transactional(readOnly = true)
+    public ProductWithAttributionDto getProductWithAttributionsById(
             Long productId
     ) {
+        // 제품 조회
         Product product = productService.getProductById(productId);
 
-        List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
+        // 제품-속성 리스트 조회
+        List<ProductAttribution> productAttributions = productAttributionService
+                .getProductAttributionByProductId(productId);
 
-        return ProductWithAttributionsResponse.builder()
-                .productResponse(productConverter.toResponse(product))
-                .attributionResponseList(productAttributionResponseList)
-                .build();
+        return getProductWithAttributionDto(product, productAttributions);
     }
 
-    public ProductResponse getProductById(Long productId) {
+    public ProductDto updateProductById(Long productId, UpdateProductDto request) {
+        // 제품 조회 & 수정
         Product product = productService.getProductById(productId);
-        return productConverter.toResponse(product);
-    }
-
-    @Transactional
-    public ProductWithAttributionsResponse updateProductById(Long productId, UpdateProductRequest request) {
-        Product product = productService.getProductById(productId);
-
         product.updateProduct(request);
 
-        List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
-
-        return ProductWithAttributionsResponse.builder()
-                .productResponse(productConverter.toResponse(product))
-                .attributionResponseList(productAttributionResponseList)
-                .build();
-    }
-
-    @Transactional
-    public ProductWithAttributionsResponse partialUpdateProductById(Long productId, PartialUpdateProductRequest request) {
-        Product product = productService.getProductById(productId);
-
-        // request
-        product.partialUpdateProduct(request);
-
-        List<ProductAttributionResponse> productAttributionResponseList = getProductAttributionResponses(product.getId());
-
-        return ProductWithAttributionsResponse.builder()
-                .productResponse(productConverter.toResponse(product))
-                .attributionResponseList(productAttributionResponseList)
-                .build();
-    }
-
-    private List<ProductAttributionResponse> getProductAttributionResponses(Long productId) {
-        List<ProductAttribution> productAttributionList = productAttributionService.getProductAttributionByProductId(productId);
-        return productAttributionList.stream()
-                .map(productAttributionConverter::toResponse)
-                .toList();
+        return ProductDto.fromDomain(product);
     }
 
     public void deleteProductById(Long productId) {
+        // 제품 삭제
         productService.deleteProductById(productId);
+    }
+
+    public List<ProductDto> searchProductByKeyword(SearchProductDto request) {
+        // 제품 검색
+        List<Product> productList = productService.searchProduct(
+                request.keyword(), request.field()
+        );
+
+        return productList.stream()
+                .map(ProductDto::fromDomain)
+                .collect(Collectors.toList());
+    }
+
+    private ProductWithAttributionDto getProductWithAttributionDto(Product product, List<ProductAttribution> productAttributions) {
+        List<AttributionValueResponseDto> attributionList = new ArrayList<>();
+        productAttributions.forEach(item -> {
+            Attribution attribution = attributionService.getAttributionById(item.getAttributionId());
+            attributionList.add(new AttributionValueResponseDto(
+                            AttributionResponseDto.AttributionResponse.fromDomain(attribution),
+                            item.getAttributionValue()
+                    )
+            );
+        });
+
+        return new ProductWithAttributionDto(
+                ProductDto.fromDomain(product),
+                attributionList
+        );
     }
 }
