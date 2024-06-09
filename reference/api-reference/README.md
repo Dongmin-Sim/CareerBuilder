@@ -1,8 +1,8 @@
-# API Reference
+# REST API Reference
 
 ## Endpoint
 
-`https://career-build.com`&#x20;
+`https://career-build.com/api`&#x20;
 
 
 
