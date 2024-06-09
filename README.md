@@ -1,18 +1,51 @@
 # CareerBuilder
 
-## 1. 개요
+## 요약
+소규모 사업장을 위한 제품 중심의 실시간 재고 관리 프로젝트입니다.
 
-### 배경
-위치별 실시간 제품 재고 서비스는 고객들에게 제품의 가용성을 확인할 수 있는 편의성을 제공하여 구매 결정을 돕고, 판매자들은 효율적인 재고 관리를 통해 비용을 절감하고 수익을 극대화할 수 있습니다.
+## 핵심 기능 
+- 제품 등록/수정/삭제 관리 기능
+- 제품 커스텀 속성 정보 추가 기능
+- 재고 위치 관리 가능
+- 제품의 입고/출고/조정/이동 거래 관리 기능
+- 거래처 등록/수정/삭제 관리 기능
 
-### 목적
-위치 별 제품의 재고 관리를 위한 서비스를 구현합니다.  
-사용자는 제품을 등록하고 관리할 수 있으며, 제품의 재고를 위치별로 관리할 수 있습니다.  
+## 기능 요구 사항 정의 
+- [제품 요구 사항 정의서-prd 확인](/docs/prd/product_v1_prd.md)
+- [제품 속성 요구 사항 정의서-prd 확인](/docs/prd/product_attribution_v1_prd.md)
+- [위치 요구 사항 정의서 prd-확인](/docs/prd/location_v1_prd.md)
+- [거래처 요구 사항 정의서 prd-확인](/docs/prd/partner_v1_prd.md)
+- [거래 요구 사항 정의서 prd-확인](/docs/prd/transaction_v1_prd.md)
+- [재고 요구 사항 정의서 prd-확인](/docs/prd/stock_v1_prd.md)
 
-### 대상
-제품 관리자, 재고 관리자
+
+## REST API 설계 
+- [REST API Reference 문서 참고](./docs/apidesign/careerbuilder_v1_api.md)
+
+## 개발 순서
+1. prd(요구 사항 정의서) 작성 
+2. API 설계  
+3. Issue 등록  
+4. 테스트 작성  
+5. 기능 구현  
+6. 브랜치 merge
 
 
-## 2. 기능 요구 사항
-본 서비스는 크게 제품과 재고 관리 기능을 주로 제공합니다.  
-이 외에도 동일한 제품을 여러 공간에 존재하는 경우 위치별로 제품의 재고를 실시간으로 관리할 수 있습니다.
+## 기술 스택
+- [자세한 tech spec 확인](./docs/tech/careerbuilder_techspec_v1.md)
+
+ 
+- 어플리케이션
+    - Spring boot 3.2.3
+        - Spring actuator
+        - Spring webmvc
+    - Spring data 
+        - Spring data jpa
+        - MySQL 8.3
+- 개발 환경
+    - Java 17
+    - Gradle 8.6
+    - IntelliJ IDEA 2024.1.2 (Ultimate Edition)
+- 테스트
+    - JUnit 5.10.2
+    - Mockito 5.7.0

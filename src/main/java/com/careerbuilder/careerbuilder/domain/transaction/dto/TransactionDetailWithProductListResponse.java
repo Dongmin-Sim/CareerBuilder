@@ -2,7 +2,7 @@ package com.careerbuilder.careerbuilder.domain.transaction.dto;
 
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationResponse;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto;
 import com.careerbuilder.careerbuilder.domain.transaction.entity.type.TransactionStatus;
 import com.careerbuilder.careerbuilder.domain.transaction.entity.type.TransactionType;
 import lombok.AllArgsConstructor;
@@ -42,7 +42,7 @@ public class TransactionDetailWithProductListResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Item {
-        ProductResponse product;
+        ProductResponseDto.ProductDto product;
         int quantity;
     }
 }

@@ -6,7 +6,7 @@ import com.careerbuilder.careerbuilder.domain.location.service.LocationService;
 import com.careerbuilder.careerbuilder.domain.partner.business.PartnerBusiness;
 import com.careerbuilder.careerbuilder.domain.partner.dto.PartnerResponse;
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.Action;
 import com.careerbuilder.careerbuilder.domain.transaction.business.transactionTypeAction.ActionFactory;
@@ -99,7 +99,7 @@ public class TransactionBusiness {
         List<TransactionDetailWithProductListResponse.Item> items = new ArrayList<>();
 
         for (TransactionItemResponse transactionProduct : transactionProductList) {
-            ProductResponse product = productBusiness.getProductById(transactionProduct.getProductId());
+            ProductResponseDto.ProductDto product = productBusiness.getProductById(transactionProduct.getProductId());
 
             items.add(new TransactionDetailWithProductListResponse.Item(product, transactionProduct.getQuantity()));
         }

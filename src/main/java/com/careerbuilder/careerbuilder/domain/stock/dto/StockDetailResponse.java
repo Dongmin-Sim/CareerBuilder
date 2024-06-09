@@ -1,14 +1,12 @@
 package com.careerbuilder.careerbuilder.domain.stock.dto;
 
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationResponse;
-import com.careerbuilder.careerbuilder.domain.product.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.entity.Product;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -18,6 +16,6 @@ import java.util.Map;
 public class StockDetailResponse {
 
     private LocationResponse location;
-    private Map<ProductResponse, Integer> productQuantityMap;
+    private Map<ProductResponseDto.ProductDto, Integer> productQuantityMap;
     private Integer totalQuantity;
 }
