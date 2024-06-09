@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ProductErrorCode implements ErrorCodeIfs {
 
-    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "product_not_found", 4100, ErrorType.CLIENT, "요청한 상품을 찾을 수 없습니다."),
-    INVALID_REQUEST(HttpStatus.BAD_REQUEST.value(), "",4101, ErrorType.CLIENT, "요청값이 ."),
-    INVALID_SEARCH_FIELD(HttpStatus.BAD_REQUEST.value(), "",4102, ErrorType.CLIENT, "검색 필드가 유효하지 않습니다")
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "product_not_found", 4100, ErrorType.CLIENT, "요청한 제품을 찾을 수 없습니다."),
+    INVALID_SEARCH_FIELD(HttpStatus.BAD_REQUEST.value(), "invalid_search_field",4102, ErrorType.CLIENT, "검색 필드가 유효하지 않습니다")
     ;
 
     private final Integer httpStatusCode;
