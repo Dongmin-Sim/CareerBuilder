@@ -1,8 +1,10 @@
 package com.careerbuilder.careerbuilder.domain.product.controller;
 
-import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponse;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
+import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
 import com.careerbuilder.careerbuilder.domain.attribution.entity.type.AttributionType;
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductAttributionResponseDto;
 import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDto;
 import com.careerbuilder.careerbuilder.domain.product.service.error.ProductErrorCode;
 import com.careerbuilder.careerbuilder.global.common.error.ErrorCode;
@@ -26,7 +28,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductAttributionResponseDto.ProductAttributionResDto;
+import static com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto.*;
 import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDto.CreateProductDto;
 import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDtoFixtures.createProductDto;
 import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDtoFixtures.updateProductDto;
@@ -142,7 +144,7 @@ public class ProductApiControllerTest {
         @DisplayName("정상 요청의 경우 200 status와 제품 정보 리턴")
         void test1000() throws Exception {
             ProductDto productDto = productDto(productId);
-            AttributionResponse attributionResponse = AttributionResponse.builder()
+            Attribution attribution = Attribution.builder()
                     .id(1L)
                     .attributionType(AttributionType.STRING)
                     .attributionName("maker")
@@ -151,8 +153,12 @@ public class ProductApiControllerTest {
             ProductWithAttributionDto responseDto = new ProductWithAttributionDto(
                     productDto,
                     List.of(
-                            new ProductAttributionResDto(attributionResponse, "apple"),
-                            new ProductAttributionResDto(attributionResponse, "samsung")
+                            new ProductAttributionResponseDto.AttributionValueResponseDto(
+                                    AttributionResponse.fromDomain(attribution), "apple"
+                            ),
+                            new ProductAttributionResponseDto.AttributionValueResponseDto(
+                                    AttributionResponse.fromDomain(attribution), "samsung"
+                            )
                     )
             );
             given(productBusiness.getProductWithAttributionsById(productId))
@@ -174,15 +180,15 @@ public class ProductApiControllerTest {
 
                 ArrayNode productAttributions = (ArrayNode) productAttributionsField;
 
-                assertAttributionEqual(productAttributions.get(0), attributionResponse);
+                assertAttributionEqual(productAttributions.get(0), attribution);
                 assertThat(productAttributions.get(0).get("value").asText()).isEqualTo("apple");
 
-                assertAttributionEqual(productAttributions.get(1), attributionResponse);
+                assertAttributionEqual(productAttributions.get(1), attribution);
                 assertThat(productAttributions.get(1).get("value").asText()).isEqualTo("samsung");
             });
         }
 
-        private static void assertAttributionEqual(JsonNode productAttribution, AttributionResponse attributionResponse) {
+        private static void assertAttributionEqual(JsonNode productAttribution, Attribution attributionResponse) {
             assertThat(productAttribution.get("attribution")).isNotNull();
             assertThat(productAttribution.get("attribution").get("id").asLong()).isEqualTo(attributionResponse.getId());
             assertThat(productAttribution.get("attribution").get("type").asText()).isEqualTo(attributionResponse.getAttributionType().toString());
