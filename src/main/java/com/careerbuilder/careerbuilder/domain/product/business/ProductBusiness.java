@@ -1,7 +1,9 @@
 package com.careerbuilder.careerbuilder.domain.product.business;
 
 import com.careerbuilder.careerbuilder.domain.attribution.converter.AttributionConverter;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
+import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
+import com.careerbuilder.careerbuilder.domain.attribution.service.AttributionService;
 import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto.ProductWithAttributionDto;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttribution;
@@ -13,10 +15,11 @@ import com.careerbuilder.careerbuilder.global.common.annotation.Business;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductAttributionResponseDto.ProductAttributionResDto;
+import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductAttributionResponseDto.AttributionValueResponseDto;
 import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductRequestDto.*;
 import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto.ProductDto;
 
@@ -26,12 +29,9 @@ import static com.careerbuilder.careerbuilder.domain.product.business.dto.Produc
 public class ProductBusiness {
 
     private final ProductService productService;
-
     private final ProductAttributionService productAttributionService;
-
     private final StockService stockService;
-
-    private final AttributionConverter attributionConverter;
+    private final AttributionService attributionService;
 
     public ProductDto register(CreateProductDto request) {
         // 제품 등록
@@ -45,7 +45,7 @@ public class ProductBusiness {
                         .stockQuantity(request.initialQuantity())
                         .build()
         );
-        return ProductResponseDto.ProductDto.fromDomain(registered);
+        return ProductDto.fromDomain(registered);
     }
 
     @Transactional(readOnly = true)
@@ -53,14 +53,14 @@ public class ProductBusiness {
         List<Product> productList = productService.getProductList();
 
         return productList.stream()
-                .map(ProductResponseDto.ProductDto::fromDomain)
+                .map(ProductDto::fromDomain)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProductDto getProductById(Long productId) {
         Product product = productService.getProductById(productId);
-        return ProductResponseDto.ProductDto.fromDomain(product);
+        return ProductDto.fromDomain(product);
     }
 
     @Transactional(readOnly = true)
@@ -74,17 +74,7 @@ public class ProductBusiness {
         List<ProductAttribution> productAttributions = productAttributionService
                 .getProductAttributionByProductId(productId);
 
-        List<ProductAttributionResDto> list = productAttributions.stream()
-                .map(it -> {
-                    return new ProductAttributionResDto(
-                            attributionConverter.toResponse(it.getAttribution()),
-                            it.getAttributionValue()
-                    );
-                }).toList();
-
-        return new ProductWithAttributionDto(
-                ProductResponseDto.ProductDto.fromDomain(product), list
-        );
+        return getProductWithAttributionDto(product, productAttributions);
     }
 
     public ProductDto updateProductById(Long productId, UpdateProductDto request) {
@@ -92,7 +82,7 @@ public class ProductBusiness {
         Product product = productService.getProductById(productId);
         product.updateProduct(request);
 
-        return ProductResponseDto.ProductDto.fromDomain(product);
+        return ProductDto.fromDomain(product);
     }
 
     public void deleteProductById(Long productId) {
@@ -107,7 +97,24 @@ public class ProductBusiness {
         );
 
         return productList.stream()
-                .map(ProductResponseDto.ProductDto::fromDomain)
+                .map(ProductDto::fromDomain)
                 .collect(Collectors.toList());
+    }
+
+    private ProductWithAttributionDto getProductWithAttributionDto(Product product, List<ProductAttribution> productAttributions) {
+        List<AttributionValueResponseDto> attributionList = new ArrayList<>();
+        productAttributions.forEach(item -> {
+            Attribution attribution = attributionService.getAttributionById(item.getAttributionId());
+            attributionList.add(new AttributionValueResponseDto(
+                            AttributionResponseDto.AttributionResponse.fromDomain(attribution),
+                            item.getAttributionValue()
+                    )
+            );
+        });
+
+        return new ProductWithAttributionDto(
+                ProductDto.fromDomain(product),
+                attributionList
+        );
     }
 }

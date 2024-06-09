@@ -1,8 +1,8 @@
 package com.careerbuilder.careerbuilder.domain.product.business;
 
-import com.careerbuilder.careerbuilder.domain.attribution.converter.AttributionConverter;
 import com.careerbuilder.careerbuilder.domain.attribution.db.entity.AttributionFixtures;
 import com.careerbuilder.careerbuilder.domain.attribution.entity.Attribution;
+import com.careerbuilder.careerbuilder.domain.attribution.service.AttributionService;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttribution;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.ProductAttributionFixtures;
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -47,8 +46,8 @@ class ProductBusinessTest {
     StockService stockService;
     @Mock
     ProductAttributionService productAttributionService;
-    @Spy
-    AttributionConverter attributionConverter;
+    @Mock
+    AttributionService attributionService;
 
     @DisplayName("제품 등록")
     @Nested
@@ -139,6 +138,8 @@ class ProductBusinessTest {
             given(productService.getProductById(eq(productId))).willReturn(product);
             given(productAttributionService.getProductAttributionByProductId(eq(productId)))
                     .willReturn(List.of(productAttribution1, productAttribution2));
+            given(attributionService.getAttributionById(any()))
+                    .willReturn(attribution);
 
             // when
             var result = sut.getProductWithAttributionsById(productId);
