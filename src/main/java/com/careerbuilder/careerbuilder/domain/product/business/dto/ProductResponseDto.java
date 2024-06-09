@@ -34,6 +34,6 @@ public class ProductResponseDto {
             @JsonProperty(value = "product")
             ProductDto product,
             @JsonProperty(value = "productAttributions")
-            List<ProductAttributionResponseDto.ProductAttributionResDto> productAttributions
+            List<AttributionValueResponseDto> productAttributions
     ) { }
 }
