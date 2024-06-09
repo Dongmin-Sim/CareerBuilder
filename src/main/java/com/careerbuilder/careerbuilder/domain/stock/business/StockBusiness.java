@@ -2,8 +2,7 @@ package com.careerbuilder.careerbuilder.domain.stock.business;
 
 import com.careerbuilder.careerbuilder.domain.location.business.LocationBusiness;
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationResponse;
-import com.careerbuilder.careerbuilder.domain.product.business.converter.ProductConverter;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto;
 import com.careerbuilder.careerbuilder.domain.product.db.entity.Product;
 import com.careerbuilder.careerbuilder.domain.product.service.ProductService;
 import com.careerbuilder.careerbuilder.domain.stock.converter.StockConverter;
@@ -29,8 +28,6 @@ public class StockBusiness {
     private final StockConverter stockConverter;
 
     private final ProductService productService;
-    private final ProductConverter productConverter;
-
     private final LocationBusiness locationBusiness;
 
     @Transactional
@@ -72,12 +69,14 @@ public class StockBusiness {
         LocationResponse location = locationBusiness.getLocationById(locationId);
 
         // map<product, quantity (sum)>으로 만들어서 리턴
-        Map<ProductResponse, Integer> productIntegerMap = new HashMap<>();
+        Map<ProductResponseDto.ProductDto, Integer> productIntegerMap = new HashMap<>();
         for (Stock stock : allStockByLocationId) {
             Product product = productService.getProductById(stock.getProductId());
-            ProductResponse productResponse = productConverter.toResponse(product);
 
-            productIntegerMap.put(productResponse, stock.getStockQuantity());
+            productIntegerMap.put(
+                    ProductResponseDto.ProductDto.fromDomain(product),
+                    stock.getStockQuantity()
+            );
         }
 
         return StockDetailResponse.builder()

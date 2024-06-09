@@ -1,12 +1,10 @@
 package com.careerbuilder.careerbuilder.domain.location.controller;
 
-import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponse;
 import com.careerbuilder.careerbuilder.domain.location.business.LocationBusiness;
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationRequest;
 import com.careerbuilder.careerbuilder.domain.location.dto.LocationResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

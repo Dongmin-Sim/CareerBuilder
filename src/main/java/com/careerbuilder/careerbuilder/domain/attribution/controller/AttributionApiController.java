@@ -1,7 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.attribution.controller;
 
 import com.careerbuilder.careerbuilder.domain.attribution.business.AttributionBusiness;
-import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponse;
+import com.careerbuilder.careerbuilder.domain.attribution.dto.AttributionResponseDto;
 import com.careerbuilder.careerbuilder.domain.attribution.dto.RegisterAttributionRequest;
 import com.careerbuilder.careerbuilder.domain.attribution.dto.UpdateAttributionNameRequest;
 import com.careerbuilder.careerbuilder.domain.attribution.dto.UpdateAttributionRankRequest;
@@ -20,47 +20,47 @@ public class AttributionApiController {
     private final AttributionBusiness attributionBusiness;
 
     @PostMapping
-    public Api<AttributionResponse> register(
+    public Api<AttributionResponseDto> register(
             @RequestBody @Valid RegisterAttributionRequest request
     ) {
-        AttributionResponse response = attributionBusiness.register(request);
+        AttributionResponseDto response = attributionBusiness.register(request);
         return Api.OK(response);
     }
 
     @GetMapping
-    public Api<List<AttributionResponse>> getAttributionList() {
-        List<AttributionResponse> response = attributionBusiness.getAttributionList();
+    public Api<List<AttributionResponseDto>> getAttributionList() {
+        List<AttributionResponseDto> response = attributionBusiness.getAttributionList();
         return Api.OK(response);
     }
 
     @GetMapping("/{attributionId}")
-    public Api<AttributionResponse> getAttributionById(
+    public Api<AttributionResponseDto> getAttributionById(
             @PathVariable Long attributionId
     ) {
-        AttributionResponse response = attributionBusiness.getAttributionById(attributionId);
+        AttributionResponseDto response = attributionBusiness.getAttributionById(attributionId);
         return Api.OK(response);
     }
 
     @PutMapping("/{attributionId}/name")
-    public Api<AttributionResponse> updateAttribution(
+    public Api<AttributionResponseDto> updateAttribution(
             @PathVariable Long attributionId,
             @RequestBody UpdateAttributionNameRequest request
     ) {
-        AttributionResponse response = attributionBusiness.updateAttributionNameById(attributionId, request);
+        AttributionResponseDto response = attributionBusiness.updateAttributionNameById(attributionId, request);
         return Api.OK(response);
     }
 
     @PutMapping("/{attributionId}/rank")
-    public Api<AttributionResponse> partialUpdateAttribution(
+    public Api<AttributionResponseDto> partialUpdateAttribution(
             @PathVariable Long attributionId,
             @RequestBody UpdateAttributionRankRequest request
     ) {
-        AttributionResponse response = attributionBusiness.updateAttributionRankById(attributionId, request);
+        AttributionResponseDto response = attributionBusiness.updateAttributionRankById(attributionId, request);
         return Api.OK(response);
     }
 
     @DeleteMapping("/{attributionId}")
-    public Api<AttributionResponse> deleteAttribution(
+    public Api<AttributionResponseDto> deleteAttribution(
             @PathVariable Long attributionId
     ) {
         attributionBusiness.deleteAttribution(attributionId);
