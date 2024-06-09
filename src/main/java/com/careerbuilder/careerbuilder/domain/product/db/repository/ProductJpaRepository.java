@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
-
-    Optional<Product> searchByNameContainingIgnoreCase(String keyword);
-
+public interface ProductJpaRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 }

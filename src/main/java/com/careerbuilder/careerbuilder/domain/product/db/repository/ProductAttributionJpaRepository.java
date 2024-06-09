@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductAttributionRepository extends JpaRepository<ProductAttribution, Long> {
+public interface ProductAttributionJpaRepository extends JpaRepository<ProductAttribution, Long> {
 
     // select * from product_attribution where productId = ? order by id;
     List<ProductAttribution> findAllByProductIdOrderById(Long productId);
-
-
 }
