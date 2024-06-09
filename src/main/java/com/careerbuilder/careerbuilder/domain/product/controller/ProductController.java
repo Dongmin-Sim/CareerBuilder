@@ -1,10 +1,7 @@
 package com.careerbuilder.careerbuilder.domain.product.controller;
 
 import com.careerbuilder.careerbuilder.domain.product.business.ProductBusiness;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductWithAttributionsResponse;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponse;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.RegisterProductRequest;
-import com.careerbuilder.careerbuilder.domain.product.business.dto.UpdateProductRequest;
+import com.careerbuilder.careerbuilder.domain.product.business.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+
+import static com.careerbuilder.careerbuilder.domain.product.business.dto.ProductResponseDto.*;
 
 @Controller
 @RequestMapping("/products")
@@ -22,7 +21,7 @@ public class ProductController {
 
     @GetMapping
     public String products(Model model) {
-        List<ProductResponse> products = productBusiness.getProductList();
+        List<ProductDto> products = productBusiness.getProductList();
         model.addAttribute("products", products);
         return "product/list";
     }
@@ -32,8 +31,8 @@ public class ProductController {
             @PathVariable Long productId,
             Model model
     ) {
-        ProductWithAttributionsResponse product = productBusiness.getProductWithAttributionsById(productId);
-        model.addAttribute("product", product.getProductResponse());
+        ProductWithAttributionDto product = productBusiness.getProductWithAttributionsById(productId);
+        model.addAttribute("product", product.product());
         return "product/detail";
     }
 
@@ -41,17 +40,17 @@ public class ProductController {
     public String addForm(
             Model model
     ) {
-        model.addAttribute("product", RegisterProductRequest.builder().build());
+        model.addAttribute("product", new ProductRequestDto());
         return "product/addForm";
     }
 
     @PostMapping("/add")
     public String createProduct(
-            @ModelAttribute RegisterProductRequest request,
+            @ModelAttribute ProductRequestDto.CreateProductDto request,
             RedirectAttributes redirectAttributes
     ) {
-        ProductResponse product = productBusiness.register(request);
-        redirectAttributes.addAttribute("productId", product.getId());
+        ProductDto product = productBusiness.register(request);
+        redirectAttributes.addAttribute("productId", product.id());
         redirectAttributes.addAttribute("param", true);
         return "redirect:/products/{productId}";
     }
@@ -61,15 +60,15 @@ public class ProductController {
             @PathVariable Long productId,
             Model model
     ) {
-        ProductWithAttributionsResponse product = productBusiness.getProductWithAttributionsById(productId);
-        model.addAttribute("product", product.getProductResponse());
+        ProductWithAttributionDto product = productBusiness.getProductWithAttributionsById(productId);
+        model.addAttribute("product", product.product());
         return "product/editForm";
     }
 
     @PostMapping("/{productId}/edit")
     public String updateProduct(
             @PathVariable Long productId,
-            @ModelAttribute UpdateProductRequest updateProductRequest
+            @ModelAttribute ProductRequestDto.UpdateProductDto updateProductRequest
     ) {
         productBusiness.updateProductById(productId, updateProductRequest);
         return "redirect:/products/{productId}";
